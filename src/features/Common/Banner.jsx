@@ -31,15 +31,15 @@ const Banner = () => {
                     />
                 ))}
             </div>
-            <div className='flex justify-center -mt-2 gap-2'>
+            <div className='flex justify-center gap-2'>
                 {slides.map((slide, index) => (
                     <div
                         key={index}
                         onClick={() => handleClick(index)}
-                        className={`cursor-pointer w-12 h-1 opacity-35 bg-white ${
-                            currentSlide === index ? 'bg-orange-500 opacity-95 transition duration-700' : 'bg-white '
+                        className={`cursor-pointer w-12 h-1 -mt-2 opacity-35 bg-white ${
+                            currentSlide === index ? ' bg-orange-600 opacity-95 transition duration-700' : 'bg-white '
                         }`}>
-                    </div>
+                    </div>  
                 ))}
             </div>
         </div>
