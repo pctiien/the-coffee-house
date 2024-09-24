@@ -1,8 +1,9 @@
 
-const News = ()=>{
+const Header = ()=>{
     return (
         <>
+
         </>
     )
 }
-export default News
+export default Header 

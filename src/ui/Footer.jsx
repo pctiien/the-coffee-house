@@ -1,8 +1,8 @@
 
-const News = ()=>{
+const Footer = ()=>{
     return (
         <>
         </>
     )
 }
-export default News
+export default Footer
