@@ -5,7 +5,6 @@ const Header = ()=>{
     const [activeItem, setActiveItem] = React.useState('')
 
     const handleClick = (item)=>{
-        console.log(item,activeItem)
         setActiveItem(item)
     }
     return (
@@ -16,7 +15,7 @@ const Header = ()=>{
                     href="/" >
                         <img 
                         className = "h-4 w-auto"
-                        src="./public/logo.png" alt="" />
+                        src="./logo.png" alt="" />
                     </a>
                 </div>
                 <div className = "flex gap-6 flex-1 justify-center ">

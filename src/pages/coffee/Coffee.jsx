@@ -2,7 +2,6 @@
 const Coffee = ()=>{
     return (
         <>
-            <div>asasas</div>
         </>
     )
 }
