@@ -59,8 +59,12 @@ const Categories = [
         img: "https://minio.thecoffeehouse.com/image/admin/1725005501_cpg.png",
         name: "Packaged Coffee - Tea"
     },
-
-
-
 ]
-export default Categories
+const CoffeeCategories = [
+    {
+        id: 13,
+        img : "https://minio.thecoffeehouse.com/image/admin/1675690611_8-signature-cpg-coffee.png",
+        name: 'Signature CPG Coffee'
+    }
+]
+export {Categories,CoffeeCategories}

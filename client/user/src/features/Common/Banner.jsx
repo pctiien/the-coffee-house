@@ -1,8 +1,7 @@
 import React from 'react';
-import slides from '../../sample/HomeBanner';
 import './Banner.css';
 
-const Banner = () => {
+const Banner = ({slides}) => {
     const [currentSlide, setCurrentSlide] = React.useState(0);
 
     const handleClick = (index) => {
@@ -11,7 +10,7 @@ const Banner = () => {
 
     React.useEffect(() => {
         const interval = setInterval(() => {
-            setCurrentSlide((prev) => (prev + 1) % slides.length);
+            setCurrentSlide((prev) => (prev + 1) % slides?.length);
         }, 5000);
 
         return () => clearInterval(interval);
@@ -23,7 +22,7 @@ const Banner = () => {
                 className="flex slides"
                 style={{ transform: `translateX(-${currentSlide * 100}%)`}}
             >
-                {slides.map((slide, index) => (
+                {slides?.map((slide, index) => (
                     <img
                         key={index}
                         className="slide w-full"
@@ -32,7 +31,7 @@ const Banner = () => {
                 ))}
             </div>
             <div className='flex justify-center gap-2'>
-                {slides.map((slide, index) => (
+                {slides?.map((slide, index) => (
                     <div
                         key={index}
                         onClick={() => handleClick(index)}

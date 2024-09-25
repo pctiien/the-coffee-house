@@ -76,5 +76,89 @@ const Products = [
         img: 'https://minio.thecoffeehouse.com/image/admin/1723623818_tra-xanh-nuoc-dua-yuzu_400x400.jpg',
         category : 2
     },
+    {
+        id:12,
+        name: 'TROPICAL GARDEN BAG 200G',
+        price: 55000,
+        img: 'https://minio.thecoffeehouse.com/image/admin/1708570525_cpg-tropical-garden_400x400.jpg',
+        category : 13
+    },
+    {
+        id:13,
+        name: 'VIETNAM TYPICA BAG 200G',
+        price: 55000,
+        img: 'https://minio.thecoffeehouse.com/image/admin/1706697757_cpg-vietnam-typica-1_400x400.jpg',
+        category : 13
+    },
+    {
+        id:14,
+        name: 'KING OF ETHIOPIA GUJI SHAKISSO 200G',
+        price: 55000,
+        img: 'https://minio.thecoffeehouse.com/image/admin/1706697655_cpg-ethiopia-guji-shakisso-1-1_400x400.jpg',
+        category : 13
+    },
+    {
+        id:15,
+        name: 'NUT CRACKER BAG 200G',
+        price: 55000,
+        img: 'https://minio.thecoffeehouse.com/image/admin/1706697434_cpg-nut-cracker-1_400x400.jpg',
+        category : 13
+    },
+    {
+        id:16,
+        name: 'SIGNATURE FILTER BAG 200G',
+        price: 55000,
+        img: 'https://minio.thecoffeehouse.com/image/admin/1706697319_cpg-phin-blend-1_400x400.jpg',
+        category : 13
+    },
+    {
+        id:17,
+        name: 'CAMPFIRE BAG 200G',
+        price: 55000,
+        img: 'https://minio.thecoffeehouse.com/image/admin/1706696895_cpg-camp-fire_400x400.jpg',
+        category : 13
+    },
+    {
+        id:18,
+        name: 'SIGNATURE FILTER BOX 200G',
+        price: 55000,
+        img: 'https://minio.thecoffeehouse.com/image/admin/1681717154_cpg-phin-blend_400x400.jpg',
+        category : 13
+    },
+    {
+        id:19,
+        name: 'HỘP TROPICAL GARDEN 200G',
+        price: 55000,
+        img: 'https://minio.thecoffeehouse.com/image/admin/1681717106_cpg-tropical-garden_400x400.jpg',
+        category : 13
+    },
+    {
+        id:20,
+        name: 'BOX OF NUT CRACKER 200G',
+        price: 55000,
+        img: 'https://minio.thecoffeehouse.com/image/admin/1681717056_cpg-nut-cracker_400x400.jpg',
+        category : 13
+    },
+    {
+        id:21,
+        name: 'SIGNATURE FILTER BOX 200G',
+        price: 55000,
+        img: 'https://minio.thecoffeehouse.com/image/admin/1681717154_cpg-phin-blend_400x400.jpg',
+        category : 13
+    },
+    {
+        id:22,
+        name: 'HỘP TROPICAL GARDEN 200G',
+        price: 55000,
+        img: 'https://minio.thecoffeehouse.com/image/admin/1681717106_cpg-tropical-garden_400x400.jpg',
+        category : 13
+    },
+    {
+        id:23,
+        name: 'BOX OF NUT CRACKER 200G',
+        price: 55000,
+        img: 'https://minio.thecoffeehouse.com/image/admin/1681717056_cpg-nut-cracker_400x400.jpg',
+        category : 13
+    },
 ]
 export default Products 

@@ -31,6 +31,11 @@ const News = [
         title: 'TƯNG BỪNG CHỐT ĐƠN, NHÀ MỜI DEAL XỊN'
     },
     {
+        id : 6 ,
+        img: 'https://feed.thecoffeehouse.com/content/images/2024/09/NOTI--13-.jpg',
+        title: 'TƯNG BỪNG CHỐT ĐƠN, NHÀ MỜI DEAL XỊN'
+    },
+    {
         id : 7 ,
         img: 'https://feed.thecoffeehouse.com/content/images/2024/09/noti--14-.jpg',
         title: 'NHÀ FREESHIP DÙ CHỈ 1 LY'

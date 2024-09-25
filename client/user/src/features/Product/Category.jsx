@@ -1,9 +1,8 @@
 import React from 'react';
-import Categories from '../../sample/Categories'
-import ProductList from '../../features/Product/ProductList';
-const Category = ()=>{
+import ProductList from './ProductList';
+const Category = ({categories})=>{
 
-    const [activeItem,setActiveItem] = React.useState(Categories[0])
+    const [activeItem,setActiveItem] = React.useState( categories ? categories[0] : '' )
     const handleClick = (item)=>{
         setActiveItem(item)
     }
@@ -14,7 +13,7 @@ const Category = ()=>{
                     <h1 className=' font-semibold text-3xl'>Products from House</h1>
                     <div className=' py-10 flex flex-wrap w-full justify-center gap-20'>
                     {
-                        Categories.map((cate,index)=>{
+                        categories?.map((cate,index)=>{
                             return (
                                 <div 
                                 onClick={()=>handleClick(cate)}
