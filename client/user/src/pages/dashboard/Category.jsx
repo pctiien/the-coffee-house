@@ -9,10 +9,10 @@ const Category = ()=>{
     }
     return (
         <>
-            <div className=''>
-                <div className='flex flex-col items-center p-10 px-36'>
+            <div className='px-36'>
+                <div className='flex flex-col items-center mt-12'>
                     <h1 className=' font-semibold text-3xl'>Products from House</h1>
-                    <div className='py-16 flex flex-wrap justify-center  gap-12'>
+                    <div className=' py-10 flex flex-wrap w-full justify-center gap-20'>
                     {
                         Categories.map((cate,index)=>{
                             return (
