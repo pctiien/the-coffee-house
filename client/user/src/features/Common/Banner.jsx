@@ -18,7 +18,7 @@ const Banner = () => {
     }, []);
 
     return (
-        <div className="banner-container ">
+        <div className="banner-container mt-20 ">
             <div
                 className="flex slides"
                 style={{ transform: `translateX(-${currentSlide * 100}%)`}}

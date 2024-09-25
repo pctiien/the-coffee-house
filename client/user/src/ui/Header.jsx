@@ -9,7 +9,7 @@ const Header = ()=>{
     }
     return (
         <>
-            <div className = "flex bg-orange-400 justify-between py-5 px-32  items-center">
+            <div className="flex bg-orange-400 h-20 justify-between py-5 px-32 items-center fixed top-0 left-0 w-full z-10">
                 <div onClick className ="text-white text-sm font-semibold flex items-center  ">
                     <a 
                     href="/" >
