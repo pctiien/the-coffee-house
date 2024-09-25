@@ -55,5 +55,26 @@ const Products = [
         img: 'https://minio.thecoffeehouse.com/image/admin/1723623818_tra-xanh-nuoc-dua-yuzu_400x400.jpg',
         category : 1
     },
+    {
+        id:9,
+        name: 'Green Tea Coconut Water',
+        price: 55000,
+        img: 'https://minio.thecoffeehouse.com/image/admin/1723623944_tra-xanh-yen-mach-nong_400x400.jpg',
+        category : 2
+    },
+    {
+        id:10,
+        name: 'Green Tea Coconut Water',
+        price: 55000,
+        img: 'https://minio.thecoffeehouse.com/image/admin/1723623818_tra-xanh-nuoc-dua-yuzu_400x400.jpg',
+        category : 2
+    },
+    {
+        id:11,
+        name: 'Green Tea Coconut Water',
+        price: 55000,
+        img: 'https://minio.thecoffeehouse.com/image/admin/1723623818_tra-xanh-nuoc-dua-yuzu_400x400.jpg',
+        category : 2
+    },
 ]
 export default Products 

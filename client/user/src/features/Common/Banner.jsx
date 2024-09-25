@@ -28,7 +28,7 @@ const Banner = () => {
                         key={index}
                         className="slide w-full"
                         src={slide.src}
-                    />
+                    />  
                 ))}
             </div>
             <div className='flex justify-center gap-2'>
