@@ -2,7 +2,7 @@
 import NewsList from '../../features/News/NewsList'
 import React from 'react'
 const News = ()=>{
-    const [activeItem,setActiveItem] = React.useState('#coffelover')
+    const [activeItem,setActiveItem] = React.useState('#coffeelover')
     const handleClick = (item)=>{
         setActiveItem(item)
     }

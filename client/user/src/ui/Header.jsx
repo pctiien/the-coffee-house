@@ -1,12 +1,22 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
+import VoucherList from '../pages/voucher/VoucherList';
 const Header = ()=>{
     const [activeItem, setActiveItem] = React.useState('')
+
+    const [openDialog,setOpenDialog] = React.useState(false)
 
     const handleClick = (item)=>{
         setActiveItem(item)
     }
+    const handleCloseDialog = ()=>{
+        setOpenDialog(false)
+    }
+    const handleOpenDialog = ()=>{
+        setOpenDialog(true)
+    }
+
+
     return (
         <>
             <div className="flex bg-orange-400 h-20 justify-between py-5 px-32 items-center fixed top-0 left-0 w-full z-10">
@@ -32,8 +42,9 @@ const Header = ()=>{
                         <Link to="/stores">Store</Link>
                     </div>
 
-                    <div onClick={()=>handleClick("voucher")} className ={`text-white text-sm font-semibold py-1 border-b-2 border-transparent hover:border-white transition duration-500 ${activeItem === 'voucher' ? 'border-white border-b-2': ''} `}>
-                        <Link to="/">Voucher</Link>
+                    <div onClick={setOpenDialog} className ={`text-white text-sm font-semibold py-1 border-b-2 border-transparent hover:border-white transition duration-500 ${activeItem === 'voucher' ? 'border-white border-b-2': ''} `}>
+                        <h1 className=' cursor-pointer'>Voucher</h1>    
+                    
                     </div>
 
                     <div onClick={()=>handleClick("recruit")} className ={`text-white text-sm font-semibold py-1 border-b-2 border-transparent hover:border-white transition duration-500 ${activeItem === 'recruit' ? 'border-white border-b-2': ''} `}>
@@ -64,6 +75,7 @@ const Header = ()=>{
                 </div>
             
             </div>
+        <VoucherList isOpen ={openDialog} onClose ={handleCloseDialog}/>
         </>
     )
 }
