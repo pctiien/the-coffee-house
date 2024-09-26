@@ -5,6 +5,7 @@ import Coffee from './pages/coffee/Coffee'
 import Store from './pages/store/Store'
 import Recruit from './pages/recruit/Recruit'
 import AppLayout from './ui/AppLayout'
+import Cart from './pages/cart/Cart'
 const App = () => {
   return (
     <>
@@ -16,6 +17,8 @@ const App = () => {
             <Route path='/news' element = {<News/>} />
             <Route path='/stores' element = {<Store/>} />
             <Route path='/recruit' element = {<Recruit/>} />
+            <Route path='/checkout' element = {<Cart/>} />
+
           </Route>
           
         </Routes>

@@ -66,7 +66,7 @@ const Header = ()=>{
 
                     <div className ="text-white text-sm font-semibold bg-white rounded-full">
                         <a 
-                        href="/" >
+                        href="/checkout" >
                             <img 
                             className = "w-10 h-10 p-2"
                             src="./cart.png" alt="" />
