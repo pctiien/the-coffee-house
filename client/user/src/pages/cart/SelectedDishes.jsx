@@ -1,5 +1,30 @@
+import { removeFromCart,removeAllFromCart } from "../../features/Redux/Slice/CartSlice"
+import { useDispatch } from "react-redux"
+import {Link,useLocation } from 'react-router-dom'
+import React from 'react'
+const SelectedDishes = ({cart})=>{
 
-const SelectedDishes = ()=>{
+    const location = useLocation();
+
+    const dispatch  = useDispatch()
+
+    const handleRemoveFromCart = (item)=>{
+        dispatch(removeFromCart({ id: item.item.id }));
+    }
+
+    const handleRemoveAllFromCart = ()=>{
+        dispatch(removeAllFromCart())
+    }
+
+    const handleScrollToProductList = () => {
+        setTimeout(() => {
+          const productListSection = document.getElementById('product-list');
+          if (productListSection) {
+            productListSection.scrollIntoView({ behavior: 'smooth' });
+          }
+        }, 0); 
+      };
+
     return (
         <>
         <div className='flex-1 '>
@@ -13,43 +38,44 @@ const SelectedDishes = ()=>{
                         <div className ='flex-1'>
                             <h1 className = 'text-lg font-semibold'>Selected dishes</h1>
                         </div>
-                        <div>
-                            <button className = 'rounded-full border border-black p-3 text-xs'>Add dish</button>
+                        <div
+                        >
+                            <Link  
+                            onClick={handleScrollToProductList}
+                            className = 'rounded-full border border-black p-3 text-xs'
+                            to='/'  >Add dish</Link>
+                            
                         </div>
                     </div>
                     <div className ='h-0.5 w-1/4  bg-orange-500 my-3'></div>
 
                     <div className = ' cursor-pointer flex flex-col gap-4'>
-                        <div className = 'flex justify-between items-center'>
-                            <div className= 'flex items-center gap-4'>
-                                <img 
-                                className = 'w-4 h-4'
-                                src="./edit.png" alt="" />
-                                <div>
-                                    <h1 className = 'text-sm font-medium'>1 x Coconut Green Tea</h1>
-                                    <h1 className = 'text-sm '>Fit</h1>
-                                    <button className = 'text-md'>Erase</button>
-                                </div>
-                            </div>
-                            <h1>
-                                55000 VND
-                            </h1>
-                        </div>
-                        <div className = 'flex justify-between items-center'>
-                            <div className= 'flex items-center gap-4'>
-                                <img 
-                                className = 'w-4 h-4'
-                                src="./edit.png" alt="" />
-                                <div>
-                                    <h1 className = 'text-sm font-medium'>1 x Coconut Green Tea</h1>
-                                    <h1 className = 'text-sm '>Fit</h1>
-                                    <button className = 'text-md'>Erase</button>
-                                </div>
-                            </div>
-                            <h1>
-                                55000 VND
-                            </h1>
-                        </div>
+                        {
+                            cart?.items?.map((item,index)=>{
+                                return (
+                                    <div key={index}>
+                                        <div className = 'flex justify-between items-center'>
+                                            <div className= 'flex items-center gap-4'>
+                                                <img 
+                                                className = 'w-4 h-4'
+                                                src="./edit.png" alt="" />
+                                                <div>
+                                                    <h1 className = 'text-sm font-medium'>{item.quantity} x {item.item.name}</h1>
+                                                    <h1 className = 'text-sm '>Fit</h1>
+                                                    <button 
+                                                    onClick={()=>handleRemoveFromCart(item)}
+                                                    className = 'text-md'>Erase</button>
+                                                </div>
+                                            </div>
+                                            <h1>
+                                                {item.total} VND
+                                            </h1>
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        }
+                        
                     </div>
                     
                     <div className = 'flex  justify-between mt-8 '>
@@ -62,7 +88,7 @@ const SelectedDishes = ()=>{
                     <div className =''>
                         <div className = 'flex justify-between border-b py-4 items-center '>
                             <h1 className ='text-sm'>Total amount</h1>
-                            <h1>55000 VND</h1>
+                            <h1>{cart?.total} VND</h1>
                         </div>
 
                         <div className = 'border-b py-4'>
@@ -93,14 +119,16 @@ const SelectedDishes = ()=>{
                             Total amount
                         </h1>
                         <h1 className ='font-medium '>
-                            73000 VND
+                            {cart.total}
                         </h1>
                     </div>
                     <button className = 'text-orange-500 rounded-full bg-white px-8 p-3 hover:text-gray-600'>Order</button>
                 </div>
             
             </div>
-              <div className ='cursor-pointer flex justify-center w-2/3 p-8 gap-2 items-center'>
+              <div 
+              onClick={handleRemoveAllFromCart}
+              className ={`${cart.items.length <=0 ?'cursor-not-allowed' :'cursor-pointer'} flex justify-center w-2/3 p-8 gap-2 items-center`}>
                 <img 
                 className = 'w-5 h-5'
                 src="./trash-bin.png" alt="" />

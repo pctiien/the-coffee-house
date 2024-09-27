@@ -1,7 +1,13 @@
 import Delivery from "./Delivery"
 import Payment from "./Payment"
 import SelectedDishes from "./SelectedDishes"
+import {useSelector ,useDispatch} from 'react-redux'
+import {removeFromCart} from '../../features/Redux/Slice/CartSlice'
+
 const Cart = ()=>{
+
+    const cart = useSelector((state)=>state.cart)
+
     return (
         <>
         <div className="mt-20">
@@ -11,7 +17,7 @@ const Cart = ()=>{
                     <Delivery/>
                     <Payment/>
                 </div>
-                <SelectedDishes/>
+                <SelectedDishes cart = {cart} />
             </div>
         </div>
         </>

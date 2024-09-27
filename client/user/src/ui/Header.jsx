@@ -1,7 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import VoucherList from '../pages/voucher/VoucherList';
+import {useSelector} from 'react-redux'
 const Header = ()=>{
+
+    const cartSize = useSelector((state)=>state.cart.items.reduce((acc,item)=>acc+=item.quantity,0))
+
     const [activeItem, setActiveItem] = React.useState('')
 
     const [openDialog,setOpenDialog] = React.useState(false)
@@ -20,13 +24,13 @@ const Header = ()=>{
     return (
         <>
             <div className="flex bg-orange-400 h-20 justify-between py-5 px-32 items-center fixed top-0 left-0 w-full z-10">
-                <div onClick className ="text-white text-sm font-semibold flex items-center  ">
-                    <a 
-                    href="/" >
+                <div className ="text-white text-sm font-semibold flex items-center  ">
+                    <Link 
+                    to="/" >
                         <img 
                         className = "h-4 w-auto"
                         src="./logo.png" alt="" />
-                    </a>
+                    </Link>
                 </div>
                 <div className = "flex gap-6 flex-1 justify-center ">
 
@@ -56,21 +60,22 @@ const Header = ()=>{
                 <div className = "flex gap-4 ">
 
                     <div className ="text-white text-sm font-semibold">
-                        <a 
-                        href="/" >
+                        <Link 
+                        to="/" >
                             <img 
                             className = "w-10 h-10"
                             src="./user.png" alt="" />
-                        </a>
+                        </Link>
                     </div>
 
-                    <div className ="text-white text-sm font-semibold bg-white rounded-full">
-                        <a 
-                        href="/checkout" >
+                    <div className ="relative text-white text-sm font-semibold bg-white rounded-full">
+                        <Link 
+                            to="/checkout" >
                             <img 
                             className = "w-10 h-10 p-2"
                             src="./cart.png" alt="" />
-                        </a>
+                            <div className='w-4 h-4 text-xs absolute top-0 right-0 bg-red-500 rounded-full text-center'>{cartSize}</div>
+                        </Link>
                     </div>
                 </div>
             

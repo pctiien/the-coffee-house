@@ -1,7 +1,10 @@
 import React from 'react'
-
+import {addToCart} from '../../features/Redux/Slice/CartSlice'
+import { useDispatch,useSelector } from 'react-redux'
 const ProductDetails = ({isOpen,onClose,product})=>{
     
+    const dispatch = useDispatch()
+    const cart = useSelector(state=>state.cart)
     const [order,setOrder] = React.useState({
         'item':product,
         'quantity': 1,
@@ -9,6 +12,13 @@ const ProductDetails = ({isOpen,onClose,product})=>{
         'topping': [],
         'total':  product.price 
     })
+
+    const handleAddToCart = ()=>{
+        dispatch(addToCart(order))
+        onClose()
+
+    }
+
     const handleSizeChange = (e)=>{
         setOrder((prev)=>({...prev,size : e.target.value}))
     }
@@ -162,7 +172,9 @@ const ProductDetails = ({isOpen,onClose,product})=>{
                         </div>
                     </div>
                     <div className='flex justify-center p-3'>
-                        <button className='p-3 w-full bg-orange-500 text-white text-sm rounded-full text-center'>{order.total} VND - Add to cart </button>
+                        <button 
+                        onClick={handleAddToCart}
+                        className='p-3 w-full bg-orange-500 text-white text-sm rounded-full text-center'>{order.total} VND - Add to cart </button>
                     </div>
                 </div>
             </div>

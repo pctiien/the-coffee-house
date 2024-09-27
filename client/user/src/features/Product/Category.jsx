@@ -8,7 +8,9 @@ const Category = ({categories})=>{
     }
     return (
         <>
-            <div className='px-36'>
+            <div 
+            id='product-list'
+            className='px-36'>
                 <div className='flex flex-col items-center mt-12'>
                     <h1 className=' font-semibold text-3xl'>Products from House</h1>
                     <div className=' py-10 flex flex-wrap w-full justify-center gap-20'>
