@@ -1,11 +1,19 @@
 import React from 'react'
-
+import ProductDetails from './ProductDetails'
 const Product = ({item})=>{
+    const [openDialog,setOpenDialog] = React.useState(false)
 
-    
+    const onCloseDialog = ()=>{
+        setOpenDialog(false)
+    }
+    const handleOpenDialog = ()=>{
+        setOpenDialog(true)
+    }
     return (
         <>
-            <div className='flex flex-col p-3 rounded-lg shadow-xl '>
+            <div 
+            onClick={handleOpenDialog}
+            className='cursor-pointer flex flex-col p-3 rounded-lg shadow-xl '>
                 <div>
                     <img
                     className='w-40 rounded-lg' 
@@ -23,6 +31,7 @@ const Product = ({item})=>{
                     src='./plus.png' alt="" />
                 </div>
             </div>
+            <ProductDetails product ={item} isOpen ={openDialog} onClose = {onCloseDialog} />
         </>
     )
 }
