@@ -1,13 +1,19 @@
-import Header from "./Header"
-import NavBar from "./NavBar"
-import {Outlet} from "react-router-dom"
-const AppLayout = ()=>{
+import Header from "./Header";
+import NavBar from "./NavBar";
+import { Outlet } from "react-router-dom";
+
+const AppLayout = () => {
     return (
-        <>
-        <Header/>
-        <Outlet/>
-        <NavBar/>
-        </>
-    )
-}
-export default AppLayout 
+        <div className="layout flex h-screen">
+            <NavBar />
+            <div className="flex-1 flex flex-col">
+                <Header />
+                <div className="flex-1 overflow-auto bg-gray-100">
+                    <Outlet />
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default AppLayout;
