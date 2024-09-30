@@ -27,17 +27,17 @@ const userSchema = new mongoose.Schema({
     timestamps: true
 })
 
-userSchema.pre('save',(next)=>{
+userSchema.pre('save',function(next){
 
     if(this.password.length < 6){
-        next(new Error('Password must be at least 6 characters long'))
+        return next(new Error('Password must be at least 6 characters long'))
     }
 
     const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
 
     if(!emailRegex.test(this.email))
     {
-        next(new Error('Invalid email format'))
+        return next(new Error('Invalid email format'))
     }
 
     next()

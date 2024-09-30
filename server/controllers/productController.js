@@ -1,4 +1,4 @@
-const {Product} = require('../models/Product')
+const Product = require('../models/Product')
 const QueryHelper = require('../utils/QueryHelper')
 
 //Get all products - GET method .../

@@ -45,5 +45,8 @@ class QueryHelper {
     }
     executeQuery(){
         this.filter().sort().limit().paginate()
+        return this 
     }
 }
+
+module.exports = QueryHelper

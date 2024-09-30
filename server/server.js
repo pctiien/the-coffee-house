@@ -20,10 +20,6 @@ const connectDB = async()=>{
         await mongoose.connect(DB)
         .then(()=>console.log('Connected to database successfully'))
 
-        await addSizeSamples()
-        await addCategorySamples()
-        await addToppingSamples()
-
     }catch(err){
         console.error('MongoDB connection failed :',err.message)
     }

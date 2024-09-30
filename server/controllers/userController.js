@@ -1,4 +1,4 @@
-const {User} = require('../models/User')
+const User = require('../models/User')
 const QueryHelper = require('../utils/QueryHelper')
 
 
@@ -6,7 +6,7 @@ const QueryHelper = require('../utils/QueryHelper')
 
 const getAllUsers = async(req,res,next)=>{
 
-    const queryBuilder = new QueryHelper(User.find(),req.query).execute() 
+    const queryBuilder = new QueryHelper(User.find(),req.query).executeQuery() 
 
     const users = await queryBuilder.query 
 
