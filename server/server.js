@@ -1,8 +1,14 @@
 const dotenv = require('dotenv')
 const mongoose = require('mongoose')
+
 const {addSizeSamples} = require('./models/Size')
 const {addCategorySamples} = require('./models/Category')
 const {addToppingSamples} = require('./models/Topping')
+
+const app = require('./app')
+
+const PORT = process.env.PORT || 8080
+
 
 dotenv.config({path:'./config.env'})
 
@@ -14,10 +20,9 @@ const connectDB = async()=>{
         await mongoose.connect(DB)
         .then(()=>console.log('Connected to database successfully'))
 
-        // await addSizeSamples()
-        // await addCategorySamples()
-        // await addToppingSamples()
-
+        await addSizeSamples()
+        await addCategorySamples()
+        await addToppingSamples()
 
     }catch(err){
         console.error('MongoDB connection failed :',err.message)
@@ -25,3 +30,6 @@ const connectDB = async()=>{
 }
 connectDB()
 
+app.listen(PORT,()=>{
+    console.log(`App running on port : ${PORT}`  )
+})
