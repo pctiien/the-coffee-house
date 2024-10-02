@@ -10,12 +10,12 @@ const NavBar = () => {
                 {
                     id: 1,
                     title: 'Add Product',
-                    ref: '/products'
+                    ref: '/add-product'
                 },
                 {
                     id: 2,
                     title: 'Product List',
-                    ref: '/products'
+                    ref: '/list-products'   
                 },
             ]
         },
@@ -72,7 +72,7 @@ const NavBar = () => {
     };
     
     return (
-        <div className="p-5  shadow-2xl w-1/6 h-screen ">
+        <div className="p-5  shadow-xl w-1/6 h-screen ">
             <div className="flex flex-col text-sm font-semibold justify-center">
                 <h1 className='uppercase text-gray-400 font-semibold text-sm mb-2'>All pages</h1>
                 {

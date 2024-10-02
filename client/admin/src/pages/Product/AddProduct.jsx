@@ -15,7 +15,7 @@ const Product = ()=>{
         </style>
             <div className='px-10'>
                 <div className="text-2xl font-bold py-8">
-                    <h1>Add Attribute</h1>
+                    <h1>Add Product</h1>
                 </div>
                 <div className="flex justify-between gap-5 ">
                     <div className ='p-5 bg-white rounded-xl shadow-xl flex-1'>

@@ -3,7 +3,7 @@ import AppLayout from './ui/AppLayout'
 
 import Category from './pages/Category/Category'
 import Order from './pages/Order/Order'
-import Product from './pages/Product/Product'
+import AddProduct from './pages/Product/AddProduct'
 
 const App = ()=>{
   return (
@@ -11,8 +11,8 @@ const App = ()=>{
       <BrowserRouter>
         <Routes>
           <Route path= '/' element = {<AppLayout/>}>
-            <Route index element = {<Product/>}/>
-            <Route path= '/products' element = {<Product/>}/>
+            <Route index element = {<AddProduct/>}/>
+            <Route path= '/add-product' element = {<AddProduct/>}/>
             <Route path= '/categories' element = {<Category/>}/>
             <Route path= '/orders' element = {<Order/>}/>
           </Route>

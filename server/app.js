@@ -5,7 +5,7 @@ const cors = require('cors');
 const userRouter = require('./routers/userRouter')
 const productRouter = require('./routers/productRouter')
 const authRouter = require('./routers/authRouter')
-
+const categoryRouter = require('./routers/categoryRouter')
 const appErrorHandler = require('./utils/appErrorHandler')
 
 app.use(
@@ -21,6 +21,7 @@ app.use(express.json())
 app.use('/auth',authRouter)
 app.use('/products',productRouter)
 app.use('/users',userRouter)
+app.use('/categories',categoryRouter)
 
 app.use(appErrorHandler)
 

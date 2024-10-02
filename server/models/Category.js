@@ -12,6 +12,7 @@ const categorySchema = new mongoose.Schema({
 
 })
 
+
 const Category = mongoose.model('Category',categorySchema)
 
 const addCategorySamples = async ()=>{
