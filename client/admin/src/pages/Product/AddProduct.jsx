@@ -109,7 +109,7 @@ const Product = ()=>{
                             <div className="cursor-pointer border-dashed border rounded-xl flex flex-col justify-center items-center gap-2 p-5 py-10">
                                 <img 
                                 className="w-10 h-10"
-                                src="./upload.png" alt="" />
+                                src="/upload.png" alt="" />
                                 <span className="text-sm text-gray-500"  >
                                     <p className=" inline-block">Drop your images here or select </p>
                                     <p className=" inline-block ml-1 text-blue-600">click to browse</p>

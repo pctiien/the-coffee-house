@@ -1,10 +1,10 @@
 import {Routes,Route,BrowserRouter} from 'react-router-dom'
 import AppLayout from './ui/AppLayout'
 
-import Category from './pages/Category/Category'
+import CategoryList from './pages/Category/CategoryList'
 import Order from './pages/Order/Order'
 import AddProduct from './pages/Product/AddProduct'
-
+import ProductList from './pages/Product/ProductList'
 const App = ()=>{
   return (
     <>
@@ -12,8 +12,10 @@ const App = ()=>{
         <Routes>
           <Route path= '/' element = {<AppLayout/>}>
             <Route index element = {<AddProduct/>}/>
-            <Route path= '/add-product' element = {<AddProduct/>}/>
-            <Route path= '/categories' element = {<Category/>}/>
+            <Route path= '/products/add' element = {<AddProduct/>}/>
+            <Route path= '/products' element = {<ProductList/>}/>
+
+            <Route path= '/categories' element = {<CategoryList/>}/>
             <Route path= '/orders' element = {<Order/>}/>
           </Route>
           

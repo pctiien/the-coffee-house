@@ -5,39 +5,39 @@ const NavBar = () => {
     const [navState, setNavState] = React.useState([
         {
             title: 'Product',
-            icon: './cart.png',
+            icon: '/cart.png',
             subItems: [
                 {
                     id: 1,
                     title: 'Add Product',
-                    ref: '/add-product'
+                    ref: '/products/add'
                 },
                 {
                     id: 2,
                     title: 'Product List',
-                    ref: '/list-products'   
+                    ref: '/products'   
                 },
             ]
         },
         {
             title: 'Category',
-            icon: './category.png',
+            icon: '/category.png',
             subItems: [
                 {
                     id: 1,
                     title: 'Category List',
-                    ref: '#'
+                    ref: '/categories'
                 },
                 {
                     id: 2,
                     title: 'New Category',
-                    ref: '#'
+                    ref: '/categories/add'
                 },
             ]
         },
         {
             title: 'Order',
-            icon: './order.png',
+            icon: '/order.png',
             subItems: [
                 {
                     id: 1,
@@ -53,7 +53,7 @@ const NavBar = () => {
         },
         {
             title: 'User',
-            icon: './user.png',
+            icon: '/user.png',
             subItems: [
                 {
                     id: 1,
