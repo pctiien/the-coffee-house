@@ -59,4 +59,4 @@ const deleteProduct = async(productId)=>{
                 }
             })
 }
-export {getAllProducts,addNewProduct,updateProduct,deleteProduct}
+export default {getAllProducts,addNewProduct,updateProduct,deleteProduct}

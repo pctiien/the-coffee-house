@@ -2,7 +2,7 @@ const Pagination = ({totalEntry,entry,currentPage,onPageChange})=>{
 
     const pageCount = 3 
     
-    const totalPages = parseInt(totalEntry/entry)
+    const totalPages = Math.ceil(totalEntry/entry)
 
     const handleChange = (page)=>{
         if(page>=1 && page<=totalPages)

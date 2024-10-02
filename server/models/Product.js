@@ -16,7 +16,11 @@ const productSchema = new mongoose.Schema({
     toppingIds: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Topping'
-    }]
+    }],
+    description:{
+        type: String,
+        default : ''
+    }
 
 },{
     timestamps: true

@@ -8,12 +8,15 @@ const getAllCategories = async(req,res,next)=>{
         const queryBuilder = new QueryHelper(Category.find(),req.query).executeQuery()
 
         const categories = await queryBuilder.query
-    
+
+        const total = await Category.countDocuments();
+
         res.status(200).json({
-            data: {
-                categories
+            result: {
+                categories,
+                total
             },
-            status: 'success'
+            status: 'success',
         })
         
     }catch(err){

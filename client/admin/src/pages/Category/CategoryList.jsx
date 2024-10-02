@@ -1,11 +1,17 @@
 import './CategoryList.css'
 import Pagination from '../../features/Common/Pagination'
 import React from 'react'
+import categoryService  from '../../services/categoryService'
+
 const CategoryList = ()=>{
+
+    const [categories,setCategories] = React.useState([])
 
     const [selectedPage,setSelectedPage] = React.useState(1)
 
     const [entry,setEntry] = React.useState(10)
+
+    const [totalEntry,setTotalEntry] = React.useState(0)
 
     const onEntryChange = (e)=>{
         setEntry(Number(e.target.value)); 
@@ -14,7 +20,23 @@ const CategoryList = ()=>{
     const onPageChange = (page)=>{
         setSelectedPage(page)
     }
+    React.useEffect(()=>{
+        
+        const fetchCategories = async()=>{
+            try{
+                const response = await categoryService.getAllCategories(entry,selectedPage)
+                setCategories(response.data.result.categories)
+                setTotalEntry(response.data.result.total)
+            } catch(e)
+            {
+                console.log(e.message)
+            }         
+        }
 
+        fetchCategories()
+
+        
+    },[selectedPage,entry])
     return (
         <>
         <div className="">
@@ -59,46 +81,26 @@ const CategoryList = ()=>{
                                 </tr>
                             </thead>
                             <tbody className=''>
-                                <tr className=''>
-                                    <td >1</td>
-                                    <td className='font-semibold'>Electronics</td>
-                                    <td>
-                                        <img
-                                        className= 'w-8 h-8' 
-                                        src="/cart.png" alt="" />
-                                    </td>
-                                </tr>
-                                <tr className=''>
-                                    <td >1</td>
-                                    <td className='font-semibold'>Electronics</td>
-                                    <td>
-                                        <img
-                                        className= 'w-8 h-8' 
-                                        src="/cart.png" alt="" />
-                                    </td>
-                                </tr>
-                                <tr className=''>
-                                    <td >1</td>
-                                    <td className='font-semibold'>Electronics</td>
-                                    <td>
-                                        <img
-                                        className= 'w-8 h-8' 
-                                        src="/cart.png" alt="" />
-                                    </td>
-                                </tr>
-                                <tr className=''>
-                                    <td >1</td>
-                                    <td className='font-semibold'>Electronics</td>
-                                    <td>
-                                        <img
-                                        className= 'w-8 h-8' 
-                                        src="/cart.png" alt="" />
-                                    </td>
-                                </tr>
+                                {
+                                    categories?.map((category,index)=>{
+                                        return (
+                                            <tr key={index} className=''>
+                                                <td >{category._id}</td>
+                                                <td className='font-semibold'>{category.name}</td>
+                                                <td>
+                                                    <img
+                                                    className= 'w-10 h-10' 
+                                                    src={category.img} alt="" />
+                                                </td>
+                                            </tr>
+                                        )
+                                    })
+                                }
+                               
                             </tbody>
                         </table>
                     </div>
-                    <Pagination  onPageChange={onPageChange} entry={entry} currentPage={selectedPage} totalEntry={100}/>
+                    <Pagination  onPageChange={onPageChange} entry={entry} currentPage={selectedPage} totalEntry={totalEntry}/>
                 </div>
             </div>
         </div>
