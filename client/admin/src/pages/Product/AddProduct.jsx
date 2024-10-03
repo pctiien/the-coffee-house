@@ -190,7 +190,7 @@ const Product = ()=>{
                                                 value={topping._id}
                                                 checked={productFormData.toppingIds.includes(topping._id)} 
                                                 onChange={handleOnChangeForm} 
-                                                className="mr-2 w-5 h-5 border rounded-full checked:bg-blue-600 checked:border-transparent focus:outline-none"
+                                                className="mr-2 w-5 h-5 border rounded-full checked:bg-blue-600 checked:border-transparent focus:outline-none min-w-[20px]"
                                                 name="toppingIds"
                                             />
                                             {topping.name}
