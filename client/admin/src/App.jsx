@@ -1,5 +1,6 @@
 import {Routes,Route,BrowserRouter} from 'react-router-dom'
 import AppLayout from './ui/AppLayout'
+import { NavBarItemProvider } from './context/NavBarItemContext'
 
 import CategoryList from './pages/Category/CategoryList'
 import Order from './pages/Order/Order'
@@ -8,6 +9,7 @@ import ProductList from './pages/Product/ProductList'
 const App = ()=>{
   return (
     <>
+    <NavBarItemProvider>
       <BrowserRouter>
         <Routes>
           <Route path= '/' element = {<AppLayout/>}>
@@ -18,9 +20,9 @@ const App = ()=>{
             <Route path= '/categories' element = {<CategoryList/>}/>
             <Route path= '/orders' element = {<Order/>}/>
           </Route>
-          
         </Routes>
       </BrowserRouter>
+    </NavBarItemProvider>
     </>
   )
 }

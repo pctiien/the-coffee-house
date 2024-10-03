@@ -7,11 +7,13 @@ const getAllProducts = async (req,res,next)=>{
     const queryHelper = new QueryHelper(Product.find(),req.query).executeQuery()
     
     const products = await queryHelper.query
+    const total = await Product.countDocuments()
 
     res.status(200).json({
         status: 'success',
-        data : {
-            products
+        result : {
+            products,
+            total
         }
     })
 }
@@ -36,8 +38,9 @@ const updateProduct = async(req,res,next)=>{
     const product = await Product.findByIdAndUpdate(req.params.id,{
         price : updateInfo.price,
         name : updateInfo.name,
-        categoryId : updateInfo.categoryId
-
+        categoryId : updateInfo.categoryId,
+        toppingIds : updateInfo.toppingIds,
+        description: updateInfo.description 
     },{
         new: true
     })
@@ -46,12 +49,6 @@ const updateProduct = async(req,res,next)=>{
         status: 'fail',
         message: 'Product not found'
     })
-
-    if(updateInfo.toppingIds && updateInfo.toppingIds.length >0)
-    {
-        product.toppingIds.push(...toppingIds)
-        await product.save()
-    }
 
     res.status(200).json({
         status: 'success',

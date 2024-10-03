@@ -1,9 +1,11 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
+import { useNavBarItemContext } from '../../context/NavBarItemContext' 
+
 const NavBarItem = ({isOpen,title,imgSrc,subItems})=>{
 
-    const [selectedItem,setSelectedItem] = React.useState(null)
-    
+    const { selectedItem, setSelectedItem } = useNavBarItemContext(); 
+
     const handleClick = (e,index)=>{
         e.stopPropagation()
         setSelectedItem(index)
