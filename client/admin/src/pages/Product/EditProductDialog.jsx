@@ -4,7 +4,7 @@ import toppingService from '../../services/toppingService'
 import productService from '../../services/productService'
 
 
-const EditProductDialog = ({isOpen,onClose,product})=>{
+const EditProductDialog = ({isOpen,onClose,product,afterUpdate})=>{
     
     const dialogRef = React.useRef(null)
 
@@ -68,6 +68,7 @@ const EditProductDialog = ({isOpen,onClose,product})=>{
             const { _id, ...updatedProductData } = productFormData;
 
             const response = await productService.updateProduct(_id,updatedProductData)
+            afterUpdate()
             
             if(response.err)
             {
@@ -282,7 +283,7 @@ const EditProductDialog = ({isOpen,onClose,product})=>{
                                 <p className="text-xs text-gray-500">You need to add at least 1 images. Pay attention to the quality of the pictures you add, comply with the background color standards. Pictures must be in certain dimensions. Notice that the product shows all the details</p>
                             </div>
                             <div className='flex gap-2 '>
-                                <div className="mt-5 flex-1  bg-blue-500 p-3 px-5 text-center rounded-xl text-white font-semibold ">
+                                <div className="mt-5 flex-1 flex bg-blue-500 p-3 px-5 text-center rounded-xl text-white font-semibold ">
                                     <button
                                     className='w-full'
                                     onClick={handleUpdateProduct}
@@ -290,7 +291,7 @@ const EditProductDialog = ({isOpen,onClose,product})=>{
                                 </div>
                                 <div 
                                 onClick={onClose}
-                                className="mt-5 flex-1  bg-gray-500 p-3 px-5 text-center rounded-xl text-white font-semibold ">
+                                className="mt-5 flex-1 flex   bg-gray-500 p-3 px-5 text-center rounded-xl text-white font-semibold ">
                                     <button
                                     className='w-full'
                                     >Close</button>

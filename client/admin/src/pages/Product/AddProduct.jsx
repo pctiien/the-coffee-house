@@ -11,7 +11,7 @@ const Product = ()=>{
 
     const [productFormData,setProductFormData] = React.useState({
         name: '',
-        price : 0,
+        price : '',
         categoryId: '',
         toppingIds: [],
         description: ''
@@ -32,7 +32,7 @@ const Product = ()=>{
                 })
             }
         }else{
-            const newVal = name === 'price' ? parseFloat(value||0): value 
+            const newVal = name === 'price' ? parseFloat(value||0) : value 
             setProductFormData({...productFormData,[name]:newVal}) 
         }
         
@@ -45,8 +45,15 @@ const Product = ()=>{
         if (productFormData.name.length <= 0) {
             errors.name = 'Product name must be at least one character';
         }
-        if (parseFloat(productFormData.price) <= 1) {
+
+        const price = parseFloat(productFormData.price);
+        if (isNaN(price) || price <= 1) {
             errors.price = 'Product price must be over 1';
+        }
+        
+        if(!categories.some(category=> category._id === productFormData.categoryId) || productFormData.categoryId.trim() ==='')
+        {
+            errors.categoryId = 'Category is required';
         }
         setErrorProductFormData(errors);
         return Object.keys(errors).length === 0; 
@@ -60,10 +67,16 @@ const Product = ()=>{
 
         if(validProductFormData())
         {
-            console.log(productFormData)
 
             try{
                 const response = await productService.addNewProduct(productFormData)
+                setProductFormData({
+                    name: '',
+                    price : '',
+                    categoryId: '',
+                    toppingIds: [],
+                    description: ''
+                })
                 console.log(response)
             }catch(e)
             {
@@ -124,6 +137,7 @@ const Product = ()=>{
                             </span>                            
                             <input 
                             name ="name"
+                            value ={productFormData.name}
                             onChange={handleOnChangeForm}
                             className="border focus:outline-none  rounded-xl p-3 px-5 w-full"
                             type="text" placeholder = 'Enter product name' />
@@ -137,7 +151,7 @@ const Product = ()=>{
                             <div className="relative w-full">
                                 <select
                                     onChange={handleOnChangeForm}
-                                    defaultValue=""
+                                    value={productFormData.categoryId}
                                     className="border border-gray-300 focus:outline-none rounded-xl p-3 px-5 w-full appearance-none bg-white"
                                     name="categoryId" id="">
                                     <option 
@@ -151,6 +165,7 @@ const Product = ()=>{
                                         })
                                     }
                                 </select>
+                                <p className="text-xs mt-2 text-red-500">{errorProductFormData.categoryId}</p>
                                 <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                                     <svg className="w-5 h-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path  d="M19 9l-7 7-7-7" />
@@ -192,7 +207,8 @@ const Product = ()=>{
                             <span className="flex gap-1 ">
                                 <h1 className="font-bold text-sm">Description</h1>
                             </span>
-                            <textarea 
+                            <textarea
+                            value={productFormData.description} 
                             onChange={handleOnChangeForm}
                             className="border focus:outline-none  rounded-xl p-3 px-5 w-full" placeholder='Enter description' 
                             name="description" id=""></textarea>
@@ -211,6 +227,7 @@ const Product = ()=>{
                                 <input
                                     onChange={handleOnChangeForm}
                                     name="price"
+                                    value={productFormData.price}
                                     className="appearance-none border focus:outline-none  rounded-xl p-3 px-5 w-full"
                                     type="number" placeholder = 'Enter price' />
                                 <p className=" absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500">

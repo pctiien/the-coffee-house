@@ -1,10 +1,38 @@
 import Pagination from "../../features/Common/Pagination"
 import productService from '../../services/productService'
-import EditProductDialog from "./EditProductDialog";
+import EditProductDialog from "./EditProductDialog"
+import Dialog from '../../features/Common/Dialog'
+
 import React from 'react'
 import {  useNavigate } from 'react-router-dom';
 import { useNavBarItemContext } from "../../context/NavBarItemContext"
 const ProductList = ()=>{
+
+
+    // Handle delete product dialog
+    const [isOpenDeleteDialog,setIsOpenDeleteDialog] = React.useState(false)
+    const onOpenDeleteDialog = (product)=>{
+        setSelectedProduct(product)
+        setIsOpenDeleteDialog(true)
+    }
+    const onCloseDeleteDialog = ()=>{
+        setIsOpenDeleteDialog(false)
+    }
+    const handleDeleteProduct = async()=>{
+
+        const response = await productService.deleteProduct(selectedProduct._id)
+        
+        if(response.err)
+        {
+            console.error(response.err)
+        }else{
+            console.log(response)
+        }
+        fetchProducts()
+    }
+    const deleteDialogMsg = "Are you sure to delete this product"
+
+
 
     // Handle edit product dialog
     const [isOpenDialog,setIsOpenDialog] = React.useState(false)
@@ -44,18 +72,26 @@ const ProductList = ()=>{
         setSelectedPage(page)
     }
 
+
+    const formattedDate = (isoDate)=>{
+        const date = new Date(isoDate)
+        return `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`
+    } 
+
+    const fetchProducts = async()=>{
+        try{
+            const response = await productService.getAllProducts(entry,selectedPage)
+            setProducts(response.data.result.products)
+            setTotalEntry(response.data.result.total)
+        } catch(e)
+        {
+            console.log(e.message)
+        }         
+    }
+
+    
     React.useEffect(()=>{
         
-        const fetchProducts = async()=>{
-            try{
-                const response = await productService.getAllProducts(entry,selectedPage)
-                setProducts(response.data.result.products)
-                setTotalEntry(response.data.result.total)
-            } catch(e)
-            {
-                console.log(e.message)
-            }         
-        }
 
         fetchProducts()
 
@@ -109,6 +145,7 @@ const ProductList = ()=>{
                                     <th>Product name</th>
                                     <th>Product image</th>
                                     <th>Price</th>
+                                    <th>Publish date</th>
                                     <th>Actions</th>
 
                                 </tr>
@@ -127,12 +164,16 @@ const ProductList = ()=>{
                                                 </td>
                                                 <td>
                                                     {product.price}
+                                                </td><td>
+                                                    {formattedDate(product.createdAt)}
                                                 </td>
                                                 <td className=" text-white">
                                                     <button 
                                                     onClick={()=>onOpenDialog(product)}
                                                     className="bg-blue-500 p-2 rounded-lg px-5">Edit</button>
-                                                    <button className="ml-2 bg-red-500 p-2 rounded-lg px-5">Delete</button>
+                                                    <button 
+                                                    onClick={()=>onOpenDeleteDialog(product)}
+                                                    className="ml-2 bg-red-500 p-2 rounded-lg px-5">Delete</button>
                                                 </td>
                                             </tr>
                                         )
@@ -145,7 +186,8 @@ const ProductList = ()=>{
                     <Pagination  onPageChange={onPageChange} entry={entry} currentPage={selectedPage} totalEntry={totalEntry}/>
                 </div>
             </div>
-            <EditProductDialog isOpen={isOpenDialog} onClose={onCloseDialog} product ={selectedProduct}/>
+            <EditProductDialog isOpen={isOpenDialog} onClose={onCloseDialog} product ={selectedProduct} afterUpdate = {fetchProducts}/>
+            <Dialog isOpen={isOpenDeleteDialog} onClose={onCloseDeleteDialog} message={deleteDialogMsg} onSave={handleDeleteProduct} />
         </div>
         </>
     )
