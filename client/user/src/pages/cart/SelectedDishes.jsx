@@ -9,7 +9,7 @@ const SelectedDishes = ({cart})=>{
     const dispatch  = useDispatch()
 
     const handleRemoveFromCart = (item)=>{
-        dispatch(removeFromCart({ id: item.item.id }));
+        dispatch(removeFromCart({ _id: item.product._id }));
     }
 
     const handleRemoveAllFromCart = ()=>{
@@ -60,7 +60,7 @@ const SelectedDishes = ({cart})=>{
                                                 className = 'w-4 h-4'
                                                 src="./edit.png" alt="" />
                                                 <div>
-                                                    <h1 className = 'text-sm font-medium'>{item.quantity} x {item.item.name}</h1>
+                                                    <h1 className = 'text-sm font-medium'>{item.quantity} x {item.product.name}</h1>
                                                     <h1 className = 'text-sm '>Fit</h1>
                                                     <button 
                                                     onClick={()=>handleRemoveFromCart(item)}

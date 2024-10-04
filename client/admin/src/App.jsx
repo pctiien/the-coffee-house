@@ -6,6 +6,8 @@ import CategoryList from './pages/Category/CategoryList'
 import Order from './pages/Order/Order'
 import AddProduct from './pages/Product/AddProduct'
 import ProductList from './pages/Product/ProductList'
+import VoucherList from './pages/Voucher/VoucherList'
+import ToppingList from './pages/Topping/ToppingList'
 const App = ()=>{
   return (
     <>
@@ -16,7 +18,8 @@ const App = ()=>{
             <Route index element = {<AddProduct/>}/>
             <Route path= '/products/add' element = {<AddProduct/>}/>
             <Route path= '/products' element = {<ProductList/>}/>
-
+            <Route path='/vouchers' element={<VoucherList/>} />
+            <Route path='/toppings' element={<ToppingList/>} />
             <Route path= '/categories' element = {<CategoryList/>}/>
             <Route path= '/orders' element = {<Order/>}/>
           </Route>

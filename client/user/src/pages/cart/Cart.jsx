@@ -1,13 +1,11 @@
 import Delivery from "./Delivery"
 import Payment from "./Payment"
 import SelectedDishes from "./SelectedDishes"
-import {useSelector ,useDispatch} from 'react-redux'
-import {removeFromCart} from '../../features/Redux/Slice/CartSlice'
+import {useSelector } from 'react-redux'
 
 const Cart = ()=>{
 
     const cart = useSelector((state)=>state.cart)
-
     return (
         <>
         <div className="mt-20">

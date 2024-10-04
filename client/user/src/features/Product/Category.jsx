@@ -1,11 +1,17 @@
 import React from 'react';
 import ProductList from './ProductList';
+
 const Category = ({categories})=>{
 
     const [activeItem,setActiveItem] = React.useState( categories ? categories[0] : '' )
+
     const handleClick = (item)=>{
         setActiveItem(item)
     }
+
+
+
+
     return (
         <>
             <div 

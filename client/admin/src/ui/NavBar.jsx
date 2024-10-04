@@ -36,6 +36,22 @@ const NavBar = () => {
             ]
         },
         {
+            title: 'Topping',
+            icon: '/topping.png',
+            subItems: [
+                {
+                    id: 1,
+                    title: 'Topping List',
+                    ref: '/toppings'
+                },
+                {
+                    id: 2,
+                    title: 'New Topping',
+                    ref: '/toppings/add'
+                },
+            ]
+        },
+        {
             title: 'Order',
             icon: '/order.png',
             subItems: [

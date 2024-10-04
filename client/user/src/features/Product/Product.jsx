@@ -16,7 +16,7 @@ const Product = ({item})=>{
             className='cursor-pointer flex flex-col p-3 rounded-lg shadow-xl '>
                 <div>
                     <img
-                    className='w-40 rounded-lg' 
+                    className='w-40 h-40 rounded-lg' 
                     src={item.img} alt="" />
                 </div>
                 <h1 className='w-40 h-16 mt-3 text-sm font-medium text-gray-900 overflow-hidden'>
@@ -28,7 +28,7 @@ const Product = ({item})=>{
                     </div>
                     <img
                     className='w-7' 
-                    src='./plus.png' alt="" />
+                    src='./plus.png' alt={item.name} />
                 </div>
             </div>
             <ProductDetails product ={item} isOpen ={openDialog} onClose = {onCloseDialog} />

@@ -1,35 +1,58 @@
 import React from 'react'
 import {addToCart} from '../../features/Redux/Slice/CartSlice'
 import { useDispatch,useSelector } from 'react-redux'
+
+import toppingService from '../../services/toppingService'
+
 const ProductDetails = ({isOpen,onClose,product})=>{
     
+    // Handle cart redux
     const dispatch = useDispatch()
     const cart = useSelector(state=>state.cart)
-    const [order,setOrder] = React.useState({
-        'item':product,
-        'quantity': 1,
-        'size': 'small',
-        'topping': [],
-        'total':  product.price 
-    })
-
     const handleAddToCart = ()=>{
         dispatch(addToCart(order))
         onClose()
 
     }
 
+
+    // Handle order
+    const [order,setOrder] = React.useState({
+        'product':product,
+        'quantity': 1,
+        'size': 'small',
+        'topping': [],
+        'total':  product.price 
+    })
+    const [toppings,setToppings] = React.useState([])
     const handleSizeChange = (e)=>{
         setOrder((prev)=>({...prev,size : e.target.value}))
     }
-
     const updateQuantity = (newQuantity)=>{
         setOrder((prev)=>({...prev,quantity: newQuantity,total : product.price * newQuantity}))
     }
+
+
+
+    const fetchToppings  = async()=>{
+
+        const response = await toppingService.getToppingsByIds(product.toppingIds)
+
+        if(response.err)
+        {
+            console.error(response.err)
+        }else{
+            setToppings(response.data.result.toppings)
+        }
+    }
+
+
     const dialog = React.useRef(null)
 
-    React.useEffect(()=>{
 
+    React.useEffect(()=>{
+        
+        fetchToppings()
         const handleClickOutside = (e)=>{
             if(dialog.current && !dialog.current.contains(e.target)){
                 onClose()
@@ -59,7 +82,7 @@ const ProductDetails = ({isOpen,onClose,product})=>{
                     </div>
                     <div className='p-5'>
                         <img 
-                        className='rounded-lg h-auto '
+                        className='rounded-lg w-full min-h-80 '
                         src={product.img} alt="" />
                         <h1 className='text-lg font-semibold py-2'>{product.name}</h1>
                         <p className='text-xs text-gray-400'>Suitable choice for those who like strong matcha but are afraid of bitterness. *Stir well to enjoy the full flavor.
@@ -130,45 +153,26 @@ const ProductDetails = ({isOpen,onClose,product})=>{
                         <h1 className='bg-gray-300 px-5 text-xs font-medium text-gray-600 py-3'>CHOOSE TOPPING (OPTIONAL)
                         </h1>
                         <div className=' p-5 '>
-                            <div className='flex items-center justify-between border-b py-2'>
-                                <div>
-                                    <h1 className='text-sm'>Cream Cheese Macchiato</h1>
-                                    <h1 className='font-semibold text-sm mt-1'>+ 10,000 VND</h1>
-                                </div>
-                                <div className='flex'>
-
-                                    <button className='w-6 h-6 border-gray-200 border-2 rounded-full text-gray-200 text-2xl flex items-center justify-center leading-none'>-</button>
-                                    <h1 className='px-3'>0</h1>
-                                    <button className='w-6 h-6 border-gray-200 border-2 rounded-full text-gray-200 text-2xl flex items-center justify-center leading-none'>+</button>
-
-                                </div>
-                            </div>
-                            <div className='flex items-center justify-between border-b py-2'>
-                                <div>
-                                    <h1 className='text-sm'>Cream Cheese Macchiato</h1>
-                                    <h1 className='font-semibold text-sm mt-1'>+ 10,000 VND</h1>
-                                </div>
-                                <div className='flex'>
-
-                                    <button className='w-6 h-6 border-gray-200 border-2 rounded-full text-gray-200 text-2xl flex items-center justify-center leading-none'>-</button>
-                                    <h1 className='px-3'>0</h1>
-                                    <button className='w-6 h-6 border-gray-200 border-2 rounded-full text-gray-200 text-2xl flex items-center justify-center leading-none'>+</button>
-
-                                </div>
-                            </div>
-                            <div className='flex items-center justify-between border-b py-2'>
-                                <div>
-                                    <h1 className='text-sm'>Cream Cheese Macchiato</h1>
-                                    <h1 className='font-semibold text-sm mt-1'>+ 10,000 VND</h1>
-                                </div>
-                                <div className='flex'>
-
-                                    <button className='w-6 h-6 border-gray-200 border-2 rounded-full text-gray-200 text-2xl flex items-center justify-center leading-none'>-</button>
-                                    <h1 className='px-3'>0</h1>
-                                    <button className='w-6 h-6 border-gray-200 border-2 rounded-full text-gray-200 text-2xl flex items-center justify-center leading-none'>+</button>
-                                    
-                                </div>
-                            </div>
+                            {
+                                toppings?.map((topping,index)=>{
+                                    return (
+                                        <div key={index} className='flex items-center justify-between border-b py-2'>
+                                            <div>
+                                                <h1 className='text-sm'>{topping.name}</h1>
+                                                <h1 className='font-semibold text-sm mt-1'>+ {topping.priceAddition}</h1>
+                                            </div>
+                                            <div className='flex'>
+            
+                                                <button className='w-6 h-6 border-gray-200 border-2 rounded-full text-gray-200 text-2xl flex items-center justify-center leading-none'>-</button>
+                                                <h1 className='px-3'>0</h1>
+                                                <button className='w-6 h-6 border-gray-200 border-2 rounded-full text-gray-200 text-2xl flex items-center justify-center leading-none'>+</button>
+            
+                                            </div>
+                                        </div>
+                                    )
+                                })
+                            }
+                            
                         </div>
                     </div>
                     <div className='flex justify-center p-3'>
