@@ -3,12 +3,12 @@ const mongoose = require('mongoose')
 const sizeSchema = new mongoose.Schema({
     name : {
         type: String,
+        enum: ['Small', 'Fit', 'Big'],
         required: true
     },
     priceAddition:{
         type: Number,
         required: true,
-        default: 0
     }
 })
 const Size = mongoose.model('Size',sizeSchema)

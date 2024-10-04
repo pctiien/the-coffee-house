@@ -4,19 +4,27 @@ const QueryHelper = require('../utils/QueryHelper')
 //Get all products - GET method .../
 const getAllProducts = async (req,res,next)=>{
     
-    const queryHelper = new QueryHelper(Product.find(),req.query).executeQuery()
-    
-    const products = await queryHelper.query
-    const total = await Product.countDocuments()
+    try{
+        const queryHelper = new QueryHelper(Product.find(),req.query).executeQuery()
 
-    res.status(200).json({
-        status: 'success',
-        result : {
-            products,
-            total
-        }
-    })
+        const products = await queryHelper.query
+        const total = await Product.countDocuments()
+
+        res.status(200).json({
+            status: 'success',
+            result : {
+                products,
+                total
+            }
+        })
+    }catch(e)
+    {
+        next(e)
+    }
 }
+
+
+
 
 //Create a product - POST method .../
 const createProduct = async(req,res,next)=>{

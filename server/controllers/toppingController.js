@@ -1,5 +1,6 @@
 const {Topping} = require('../models/Topping')
 const QueryHelper = require('../utils/QueryHelper')
+const mongoose = require('mongoose')
 const getAllToppings = async(req,res,next)=>{
     try{
         
@@ -20,4 +21,42 @@ const getAllToppings = async(req,res,next)=>{
     }
 }
 
-module.exports = {getAllToppings}
+const getToppingsByIds = async (req,res,next)=>{
+    try{
+        const ids = req.query._id
+
+        if (!ids) {
+            return res.status(400).json({
+                status: 'fail',
+                message: 'Missing topping ids'
+            });
+        }
+
+        const toppingIds = ids.split(',')
+
+        for (let id of toppingIds) {
+            if (!mongoose.Types.ObjectId.isValid(id)) {
+                return res.status(400).json({
+                    status: 'fail',
+                    message: `Invalid ObjectId format: ${id}`
+                });
+            }
+        }
+        const toppings = await Topping.find({
+            _id: { $in: toppingIds.map(id =>new mongoose.Types.ObjectId(String(id))) } 
+        });
+
+        res.status(200).json({
+            result: {
+                toppings
+            },
+            status: 'success'
+        })
+
+    }catch(err){
+        next(err)
+    }
+}
+
+
+module.exports = {getAllToppings,getToppingsByIds}

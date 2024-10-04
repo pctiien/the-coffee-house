@@ -1,3 +1,5 @@
+const mongoose = require('mongoose');
+
 class QueryHelper {
     constructor(query,queryString)
     {
@@ -9,7 +11,6 @@ class QueryHelper {
         const queryObj = {...this.queryString}
         const excludedFields = ["page", "sort", "limit"]
         excludedFields.forEach(field => delete queryObj[field])
-
         let queryStr = JSON.stringify(queryObj)
         queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`)
         this.query = this.query.find(JSON.parse(queryStr))
@@ -43,9 +44,9 @@ class QueryHelper {
 
         return this
     }
-    executeQuery(){
-        this.filter().sort().limit().paginate()
-        return this 
+    executeQuery() {
+        const filteredQuery = this.filter().sort().limit().paginate();
+        return this;
     }
 }
 
