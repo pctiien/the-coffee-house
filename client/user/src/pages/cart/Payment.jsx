@@ -1,10 +1,14 @@
 import React from 'react'
-
+import {useOrder} from '../../utils/hooks/useOrder'
 
 const Payment = ()=>{
-    const [activePayment,setActivePayment] = React.useState('cash')
+
+    const {order,setOrder} = useOrder()
+
+    const [activePayment,setActivePayment] = React.useState(order.paymentMethod || 'cash')
 
     const handlePaymentChange = (e)=>{
+        setOrder({...order,paymentMethod: e.target.value})
         setActivePayment(e.target.value)
     }
 
@@ -19,8 +23,8 @@ const Payment = ()=>{
                 <div className = 'flex items-center gap-2 m-5 py-2 border-b'>
                     <input
                     onChange = {handlePaymentChange} 
-                    checked = {activePayment ==='cash'}
-                    value = 'cash'
+                    checked = {activePayment ==='Cash'}
+                    value = 'Cash'
                     className="  w-6 h-6  " type = 'radio'></input>
                     <img 
                     className = 'w-6 h-6 ml-5'
@@ -31,9 +35,9 @@ const Payment = ()=>{
                 </div>
                 <div className = 'flex items-center gap-2 m-5 py-2 border-b'>
                     <input 
-                    checked = {activePayment === 'momo'}
+                    checked = {activePayment === 'Momo'}
                     onChange = {handlePaymentChange}
-                    value = 'momo'
+                    value = 'Momo'
                     className="  w-6 h-6 " type = 'radio'></input>
                     <img 
                     className = 'w-6 h-6 ml-5'
@@ -45,8 +49,8 @@ const Payment = ()=>{
                 <div className = 'flex items-center gap-2 m-5 py-2 border-b'>
                     <input
                     onChange = {handlePaymentChange}
-                    checked = {activePayment === 'zalo-pay'} 
-                    value = 'zalo-pay'
+                    checked = {activePayment === 'ZaloPay'} 
+                    value = 'ZaloPay'
                     className="  w-6 h-6  " type = 'radio'></input>
                     <img 
                     className = 'w-6 h-6 ml-5'
@@ -58,8 +62,8 @@ const Payment = ()=>{
                 <div className = 'flex items-center gap-2 m-5 py-2 border-b'>
                     <input
                     onChange = {handlePaymentChange}
-                    checked = {activePayment === 'shopee-pay'} 
-                    value = 'shopee-pay'
+                    checked = {activePayment === 'ShopeePay'} 
+                    value = 'ShopeePay'
                     className="  w-6 h-6 " type = 'radio'></input>
                     <img 
                     className = 'w-6 h-6 ml-5'

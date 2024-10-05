@@ -5,11 +5,11 @@ const OrderContext = React.createContext()
 export const OrderProvider = ({children})=>{
 
     const [order,setOrder] = React.useState({
-        userId : '66fa5656fd016efcc20372c0',
+        user : {},
         address: '',
-        paymentMethod : '',
+        paymentMethod : 'cash',
         deliveryTime: {},
-        orderItemIds: [],
+        orderItemIds: [{}],
         status: 'Pending',
         voucherUsed : null
     })

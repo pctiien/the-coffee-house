@@ -6,6 +6,14 @@ const Delivery = ()=>{
 
     const {order,setOrder} = useOrder()
 
+    // Handle recipient info - user info 
+
+    const onChangeUserInfo = (e)=>{
+        const {name,value} = e.target
+        setOrder({...order,user:{...order.user,[name]:value}})
+    }
+
+
     // Handle delivery dialog
     const [openDeliveryDialog,setOpenDeliveryDialog] = React.useState(false)
     const onCloseDeliveryDialog = ()=>{
@@ -68,13 +76,31 @@ const Delivery = ()=>{
                 </div>
             </div>
             <div className = 'flex flex-col text-sm gap-5 mt-2'>
-                <input 
+                <input
+                onChange={onChangeUserInfo}
+                name = 'name'
+                value = {order.user.name} 
                 className = 'border p-3 px-5 font-light focus:outline-none'
                 type="text" placeholder = 'Recipient name' />
                 <input 
-                className = 'border p-3 px-5 font-light focus:outline-none'
-                type="text" placeholder = 'Phone number' />
+                    onChange={onChangeUserInfo}
+                    value = {order.user.phone} 
+                    name='phone'
+                    className='border p-3 px-5 font-light focus:outline-none'
+                    type="number" 
+                    placeholder='Phone number'
+                    onKeyDown={(e) => {
+                        if (e.key === '-' || e.key === '.' || e.key === 'e') {
+                            e.preventDefault();
+                        }
+                    }}
+                    min="0"
+                    step="1" 
+                />
                 <input 
+                value = {order.user.instructions} 
+                onChange={onChangeUserInfo}
+                name ='instructions'
                 className = 'border p-3 px-5 font-light focus:outline-none'
                 type="text" placeholder = 'Add delivery instructions' />
             </div>

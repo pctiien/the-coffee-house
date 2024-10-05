@@ -1,20 +1,93 @@
 import { removeFromCart,removeAllFromCart } from "../../features/Redux/Slice/CartSlice"
 import { useDispatch } from "react-redux"
-import {Link,useLocation } from 'react-router-dom'
+import {Link } from 'react-router-dom'
+import {useOrder} from '../../utils/hooks/useOrder'
+import orderService from '../../services/orderService'
+
+
 import React from 'react'
+
 const SelectedDishes = ({cart,size})=>{
 
-    const location = useLocation();
 
+    // Handle confirm order
+    const {order,setOrder} = useOrder()
+
+    const handleConfirmOrder = async()=>{
+        const orderItemIds = cart.items.map(item=>{
+            return {
+                productId: item.product._id,
+                quantity: item.quantity,
+                sizeId: item.size._id,
+                total: item.total,
+                toppings: item.toppings.map(topping=>{
+                    return {
+                        toppingId: topping._id,
+                        quantity: topping.quantity}
+                    })
+            }
+        })
+        setOrder({...order,orderItemIds})
+    
+        if(!validateOrder()) return 
+        const response = await orderService.createOrder(order)
+
+        if(response.err)
+        {
+            
+            alert('Order failed')
+            console.error(response.err)
+
+        }else{
+
+            alert('Order successfully')
+            setOrder({
+                ...order,orderItemIds: [],
+            })
+            handleRemoveAllFromCart()
+        }
+        
+    }
+
+    // Handle error Order
+
+    const validateOrder = ()=>{
+        if(order.orderItemIds.length <=0)
+        {
+            alert('At least one order item')
+            return false
+        }
+        if(order.address.trim().length <=0)
+        {
+            alert('Address is required')
+            return false
+        }
+        if(order.paymentMethod.trim().length <=0)
+        {
+           alert('Payment method is required ')
+           return false
+        }
+        if(!order.deliveryTime.date || !order.deliveryTime.time){
+            alert('Delivered time is required')
+            return false
+        }
+        if (!order.user || Object.keys(order.user).length === 0) {
+            alert('User information is required')
+            return false
+        }
+        return true
+    }
+
+
+    // Dispatch action to cart slice
     const dispatch  = useDispatch()
-
     const handleRemoveFromCart = (item)=>{
         dispatch(removeFromCart({ _id: item.product._id }));
     }
-
     const handleRemoveAllFromCart = ()=>{
         dispatch(removeAllFromCart())
     }
+
 
     const handleScrollToProductList = () => {
         setTimeout(() => {
@@ -42,7 +115,7 @@ const SelectedDishes = ({cart,size})=>{
                         >
                             <Link  
                             onClick={handleScrollToProductList}
-                            className = 'rounded-full border border-black p-3 text-xs'
+                            className = 'rounded-full border  text-gray-600 hover:text-white hover:bg-orange-400 p-3 px-5 text-xs'
                             to='/'  >Add dish</Link>
                             
                         </div>
@@ -99,25 +172,12 @@ const SelectedDishes = ({cart,size})=>{
                             <h1>{cart?.total} VND</h1>
                         </div>
 
-                        <div className = 'border-b py-4'>
-                            <div className = 'flex justify-between items-center'>
-                                <h1 className ='text-sm'>Shipping fee</h1>
-                                <h1>18000 VND</h1>
-                            </div>
-                            <div className = 'flex justify-between mt-2 items-center'>
-                                <h1 className = 'text-sm'>You have Freeship code in Offers section</h1>
-                                <h1>0d</h1>
-                            </div>
-                        </div>
+                        
                         <div className ='py-4 cursor-pointer'>
                             <h1 className ='text-orange-400 text-sm'>
                                 Promotion
                             </h1>
-                            <div className= 'flex justify-between py-2 items-center'>
-                                <h1 className='text-sm'>20K off for orders of 50K</h1>
-                                <h1 className = ''>-20000 VND</h1>
-
-                            </div>
+                            
                         </div>
                     </div>
                </div>
@@ -130,7 +190,9 @@ const SelectedDishes = ({cart,size})=>{
                             {cart.total}
                         </h1>
                     </div>
-                    <button className = 'text-orange-500 rounded-full bg-white px-8 p-3 hover:text-gray-600'>Order</button>
+                    <button 
+                    onClick = {handleConfirmOrder}
+                    className = 'text-orange-500 rounded-full bg-white px-8 p-3 hover:text-gray-600'>Order</button>
                 </div>
             
             </div>

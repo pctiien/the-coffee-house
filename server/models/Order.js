@@ -1,10 +1,27 @@
-const mongoose = required('mongoose')
+const mongoose = require('mongoose')
 
-const orderSchema = new mongoose.Schema({
+const userInfoSchema = new mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
-        required: true,
         ref: 'User'
+    },
+    name: {
+        type: String,
+        required: true
+    },
+    phone: {
+        type: String,
+        required: true
+    },
+    instructions: {
+        type: String,
+    }
+}, { _id: false });
+const orderSchema = new mongoose.Schema({
+
+    user: {
+        type: userInfoSchema,
+        required: true,
     },
     address:{
         type: String,
@@ -12,7 +29,7 @@ const orderSchema = new mongoose.Schema({
     },
     paymentMethod :{
         type: String,
-        enum : ['Cash','Momo','Zalopay','ShopeePay'],
+        enum : ['Cash','Momo','ZaloPay','ShopeePay'],
         required: true
     },
     deliveryTime: {

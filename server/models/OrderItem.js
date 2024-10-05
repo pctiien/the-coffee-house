@@ -1,5 +1,15 @@
 const mongoose = require('mongoose') 
-
+const toppingSchema = new mongoose.Schema({
+    toppingId : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref:'Topping',
+        required: true
+    },
+    quantity: {
+        type: Number,
+        default: 1
+    },
+})
 const orderItemSchema = new mongoose.Schema({
     productId:{
         type: mongoose.Schema.Types.ObjectId,
@@ -13,9 +23,8 @@ const orderItemSchema = new mongoose.Schema({
     total : {
         type: Number
     },
-    toppingIds:[{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Topping'
+    toppings:[{
+        type: toppingSchema,
     }],
     sizeId: {
         type: mongoose.Schema.Types.ObjectId ,
@@ -23,5 +32,5 @@ const orderItemSchema = new mongoose.Schema({
     }
 })
 
-const OrderItem = mongoose.model('OrderItem',orderSchema) 
+const OrderItem = mongoose.model('OrderItem',orderItemSchema) 
 module.exports = OrderItem 

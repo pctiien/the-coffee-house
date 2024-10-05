@@ -2,30 +2,52 @@ const Order = require('../models/Order')
 const User = require('../models/User')
 const Voucher = require('../models/Voucher')
 const Product = require('../models/Product')
-const Topping = require('../models/Topping')
-const Size = require('../models/Size')
+const {Topping} = require('../models/Topping')
+const {Size} = require('../models/Size')
 const OrderItem = require('../models/OrderItem')
 
 
 const AppError = require('../utils/appError')
 const QueryHelper = require('../utils/QueryHelper')
 
+const getAllOrders = async(req,res,next)=>{
+    const queryBuilder = new QueryHelper(Order.find(),req.query).executeQuery()
+    const orders = await queryBuilder.query
+    res.status(200).json({
+        result : {
+            orders
+        },
+        status: 'success'
+    })
+}
 
 // Create Order - POST .../
 const createOrder = async(req,res,next)=>{
-
+    
     try{
 
         const orderData = req.body 
-
+        const orderItemIds = []
         let totalMoney = 0
 
-        const user = await User.findOne({_id: orderData.userId})
-        if(!user)
+        if(orderData.user.userId)
         {
-            return new AppError("User not found",400)
+            const user = await User.findOne({_id: orderData.userId})
+            if(!user)
+            {
+                    return next(new AppError("User not found",400))
+            }
         }
-
+        
+        // Handle cast delivery time
+        const { date, time } = orderData.deliveryTime;
+        const timeFormatted = time.padStart(5,'0')
+        const deliveryDateTimeStr = `${date}T${timeFormatted}:00`; 
+        const deliveryDateTime = new Date(deliveryDateTimeStr);
+        if (isNaN(deliveryDateTime.getTime())) {
+            console.log(deliveryDateTime)
+            return next(new AppError("Invalid delivery time", 400));
+        }
 
 
         for (const item of orderData.orderItemIds) {
@@ -41,16 +63,16 @@ const createOrder = async(req,res,next)=>{
             let total = product.price * item.quantity;
 
             // Topping
-            for (const toppingId of item.toppingIds) {
+            for (const toppingItem of item.toppings) {
 
-                const topping = await Topping.findOne({ _id: toppingId });
+                const topping = await Topping.findOne({ _id: toppingItem.toppingId });
 
                 if (!topping) {
 
                     return next(new AppError("Topping not found", 400));
                 }
 
-                total += topping.priceAddition;
+                total += topping.priceAddition*toppingItem.quantity
             }
 
             // Size
@@ -67,11 +89,14 @@ const createOrder = async(req,res,next)=>{
                 productId: item.productId,
                 quantity: item.quantity,
                 sizeId: item.sizeId,
-                toppingIds: item.toppingIds,
+                toppings: item.toppings,
                 total: total
             });
 
+            orderItemIds.push(orderItem._id)
+
             totalMoney += total
+
         }
 
         if(orderData.voucherUsed)
@@ -79,7 +104,7 @@ const createOrder = async(req,res,next)=>{
             const voucher = await Voucher.findOne({code: orderData.voucherId})
             if(!voucher)
             {
-                return new AppError("Voucher not found",400)
+                return next(new AppError("Voucher not found",400))
             }
 
             totalMoney = totalMoney*(1-voucher.discountValue)
@@ -89,12 +114,15 @@ const createOrder = async(req,res,next)=>{
 
 
         const order = await  Order.create({
-            userId : orderData.userId,
+            user : orderData.user,
             address : orderData.address,
             total : totalMoney ,
-            orderItemIds : orderData.orderItemIds,
-            status : 'Pending',
-            voucherUsed : orderData.voucherUsed
+            orderItemIds : orderItemIds,
+            status : orderData.status || 'Pending',
+            voucherUsed : orderData.voucherUsed,
+            paymentMethod: orderData.paymentMethod,
+            deliveryTime: deliveryDateTime,
+
         }) 
         
         res.status(200).json({
@@ -109,3 +137,5 @@ const createOrder = async(req,res,next)=>{
         next(e)
     }
 }
+
+module.exports = {createOrder,getAllOrders}

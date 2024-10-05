@@ -23,6 +23,7 @@ const DeliveryTimeDialog = ({isOpen,onClose})=>{
     }
     const handleConfirm = ()=>{
         setOrder({...order,deliveryTime})
+        onClose()
     }
     const generateTimeOptions = () => {
         const options = [];
@@ -81,8 +82,8 @@ const DeliveryTimeDialog = ({isOpen,onClose})=>{
                     defaultValue={getISODateFromToday()}
                     className='w-full focus:outline-none rounded-md p-3 text-sm text-gray-600 border'
                     name="" id="">
-                        <option value={getISODateFromToday()}>Hôm nay</option>
-                        <option value={getISODateFromToday(1)}>Ngày mai</option>
+                        <option value={getISODateFromToday()}>Today</option>
+                        <option value={getISODateFromToday(1)}>Tomorrow</option>
                 </select>
                 <select
                     defaultValue={'8:00'}
