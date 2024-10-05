@@ -3,7 +3,7 @@ import AppLayout from './ui/AppLayout'
 import { NavBarItemProvider } from './context/NavBarItemContext'
 
 import CategoryList from './pages/Category/CategoryList'
-import Order from './pages/Order/Order'
+import OrderList from './pages/Order/OrderList'
 import AddProduct from './pages/Product/AddProduct'
 import ProductList from './pages/Product/ProductList'
 import VoucherList from './pages/Voucher/VoucherList'
@@ -21,7 +21,7 @@ const App = ()=>{
             <Route path='/vouchers' element={<VoucherList/>} />
             <Route path='/toppings' element={<ToppingList/>} />
             <Route path= '/categories' element = {<CategoryList/>}/>
-            <Route path= '/orders' element = {<Order/>}/>
+            <Route path= '/orders' element = {<OrderList/>}/>
           </Route>
         </Routes>
       </BrowserRouter>

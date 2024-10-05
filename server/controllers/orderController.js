@@ -13,9 +13,11 @@ const QueryHelper = require('../utils/QueryHelper')
 const getAllOrders = async(req,res,next)=>{
     const queryBuilder = new QueryHelper(Order.find(),req.query).executeQuery()
     const orders = await queryBuilder.query
+    const total = await Order.countDocuments()
     res.status(200).json({
         result : {
-            orders
+            orders,
+            total
         },
         status: 'success'
     })
@@ -41,14 +43,15 @@ const createOrder = async(req,res,next)=>{
         
         // Handle cast delivery time
         const { date, time } = orderData.deliveryTime;
-        const timeFormatted = time.padStart(5,'0')
-        const deliveryDateTimeStr = `${date}T${timeFormatted}:00`; 
-        const deliveryDateTime = new Date(deliveryDateTimeStr);
-        if (isNaN(deliveryDateTime.getTime())) {
-            console.log(deliveryDateTime)
+        const timeFormatted = time.padStart(5, '0');
+        const deliveryDateTimeStr = `${date}T${timeFormatted}:00.000Z`;
+        const deliveryDateTime = new Date(deliveryDateTimeStr)
+        console.log(deliveryDateTimeStr,deliveryDateTime);
+        if (isNaN(deliveryDateTime.getTime())) { 
             return next(new AppError("Invalid delivery time", 400));
         }
 
+        const localDateTime = deliveryDateTime.toLocaleString('en-US', { timeZone: 'Asia/Ho_Chi_Minh', hour12: false });
 
         for (const item of orderData.orderItemIds) {
 

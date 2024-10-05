@@ -58,5 +58,11 @@ const orderSchema = new mongoose.Schema({
     timestamps: true
 })
 
+orderSchema.pre('remove', async function (next) {
+    const orderItemIds = this.orderItemIds;
+    await OrderItem.deleteMany({ _id: { $in: orderItemIds } });
+    next();
+});
+
 const Order = mongoose.model('Order',orderSchema) 
 module.exports = Order

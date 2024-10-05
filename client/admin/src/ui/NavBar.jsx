@@ -58,7 +58,7 @@ const NavBar = () => {
                 {
                     id: 1,
                     title: 'Order List',
-                    ref: '#'
+                    ref: '/orders'
                 },
                 {
                     id: 2,
