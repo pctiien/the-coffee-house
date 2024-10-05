@@ -1,4 +1,25 @@
+import {useOrder}  from '../../utils/hooks/useOrder'
+import React from 'react'
+import AddressDialog from './AddressDialog'
+import DeliveryTimeDialog from './DeliveryTimeDialog'
 const Delivery = ()=>{
+
+    const {order,setOrder} = useOrder()
+
+    // Handle delivery dialog
+    const [openDeliveryDialog,setOpenDeliveryDialog] = React.useState(false)
+    const onCloseDeliveryDialog = ()=>{
+        setOpenDeliveryDialog(false)
+    }
+
+    // Handle address dialog
+    const [isOpenDialog,setIsOpenDialog] = React.useState(false)
+
+    const onCloseDialog = ()=>{
+
+        setIsOpenDialog(false)
+
+    }
     return (
         <>
         <div className = 'w-2/3 '>
@@ -8,7 +29,9 @@ const Delivery = ()=>{
                     <div className ='h-0.5 w-1/4  bg-orange-500 mt-2'></div>
                 </div>
                 <div>
-                    <button className = 'rounded-full border border-black p-3 text-xs'>Change address</button>
+                    <button 
+                    onClick={()=>setIsOpenDialog(true)}
+                    className = 'hover:bg-orange-400 hover:text-white rounded-full border text-gray-600 p-3 text-xs'>Change address</button>
                 </div>
             </div>
             <div className = 'flex gap-5 text-sm mt-4 py-2 '>
@@ -16,10 +39,12 @@ const Delivery = ()=>{
                 className = 'w-10 h-10 '
                 src="./delivery.png" alt="" />
                 <div className = 'w-full flex flex-col '>
-                    <div className = 'flex items-center justify-between w-full cursor-pointer  ' >
+                    <div 
+                    onClick ={()=>setIsOpenDialog(true)}
+                    className = 'flex items-center justify-between w-full cursor-pointer  ' >
                         <div>
-                            <h1 className = 'font-medium'>District 1</h1>
-                            <p className = 'mt-1'>District 1, Ho Chi Minh City, Vietnam</p>
+                            <h1 className = 'font-medium'>Address</h1>
+                            <p className = 'mt-1'>{order.address}</p>
                         </div>
                         <img
                         className = 'w-5 h-5' 
@@ -29,10 +54,12 @@ const Delivery = ()=>{
                     <div 
                     className = 'h-0.5 w-full bg-gray-100 my-3'></div>
 
-                    <div className = 'flex items-center justify-between w-full pt-2 cursor-pointer '>
+                    <div 
+                    onClick={()=>setOpenDeliveryDialog(true)}
+                    className = 'flex items-center justify-between w-full pt-2 cursor-pointer '>
                         <div>
-                            <h1 className = 'font-medium'>Receive goods within 15-30 minutes</h1>
-                            <p className = 'mt-1'>When: As soon as possible</p>
+                            <h1 className = 'font-medium'>Delivery time</h1>
+                            <p className = 'mt-1'>When : {order.deliveryTime.time} {order.deliveryTime.date}</p>
                         </div>
                         <img
                         className = 'w-5 h-5' 
@@ -52,6 +79,8 @@ const Delivery = ()=>{
                 type="text" placeholder = 'Add delivery instructions' />
             </div>
         </div>
+        <AddressDialog isOpen = {isOpenDialog} onClose ={onCloseDialog}/>
+        <DeliveryTimeDialog isOpen={openDeliveryDialog} onClose ={onCloseDeliveryDialog} />
         </>
     )
 }

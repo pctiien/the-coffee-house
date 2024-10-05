@@ -6,6 +6,19 @@ const orderSchema = new mongoose.Schema({
         required: true,
         ref: 'User'
     },
+    address:{
+        type: String,
+        required: true
+    },
+    paymentMethod :{
+        type: String,
+        enum : ['Cash','Momo','Zalopay','ShopeePay'],
+        required: true
+    },
+    deliveryTime: {
+        type: Date,
+        required: true, 
+    },
     total : {
         type: Number,
         required: true
@@ -16,13 +29,14 @@ const orderSchema = new mongoose.Schema({
     }],
     status :{
         type:String,
-        enum: ['Pending','Completed','Rejected'],
+        enum: ['Pending','Delivering','Completed','Rejected'],
         default: 'Pending'
     },
-    voucherUsed : [{
+    voucherUsed: {
         type: mongoose.Schema.Types.ObjectId,
-        default: null
-    }]
+        ref: 'Voucher', 
+        default: null 
+    }
 },{
     timestamps: true
 })

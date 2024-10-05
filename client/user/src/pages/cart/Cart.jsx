@@ -2,11 +2,11 @@ import Delivery from "./Delivery"
 import Payment from "./Payment"
 import SelectedDishes from "./SelectedDishes"
 import {useSelector } from 'react-redux'
-import React from 'react'
-import sizeService from '../../services/sizeService'
+
 const Cart = ()=>{
 
     const cart = useSelector((state)=>state.cart)
+
     return (
         <>
         <div className="mt-20">
