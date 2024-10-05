@@ -2,7 +2,7 @@ import { removeFromCart,removeAllFromCart } from "../../features/Redux/Slice/Car
 import { useDispatch } from "react-redux"
 import {Link,useLocation } from 'react-router-dom'
 import React from 'react'
-const SelectedDishes = ({cart})=>{
+const SelectedDishes = ({cart,size})=>{
 
     const location = useLocation();
 
@@ -61,7 +61,15 @@ const SelectedDishes = ({cart})=>{
                                                 src="./edit.png" alt="" />
                                                 <div>
                                                     <h1 className = 'text-sm font-medium'>{item.quantity} x {item.product.name}</h1>
-                                                    <h1 className = 'text-sm '>Fit</h1>
+                                                    <h1 className = 'text-sm '>{item.size.name}</h1>
+                                                    {
+                                                        item.toppings?.map((topping,index)=>{
+                                                            return (
+                                                                <h1 key={index} className = 'text-sm '>{topping.name}</h1>
+ 
+                                                            )
+                                                        })
+                                                    }
                                                     <button 
                                                     onClick={()=>handleRemoveFromCart(item)}
                                                     className = 'text-md'>Erase</button>

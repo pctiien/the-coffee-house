@@ -18,7 +18,7 @@ const cartSlice = createSlice({
       }else{
         state.items.push(action.payload); 
       }
-      state.total += action.payload.total
+      state.total += action.payload.total 
     },
     removeFromCart: (state, action) => {
       const existingItem = state.items.find(item=>item.product._id === action.payload._id);

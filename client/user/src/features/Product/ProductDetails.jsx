@@ -3,37 +3,77 @@ import {addToCart} from '../../features/Redux/Slice/CartSlice'
 import { useDispatch,useSelector } from 'react-redux'
 
 import toppingService from '../../services/toppingService'
+import sizeService from '../../services/sizeService'
 
 const ProductDetails = ({isOpen,onClose,product})=>{
     
+    // Handle erorr
+    const [errors, setErrors] = React.useState({}); 
+
+    const validateOrder = () => {
+        let err = {}; 
+        if (!sizes.some(size => size._id === order.size._id)) {
+            err.size = 'size is required';
+        }
+
+        setErrors(err);
+
+        return Object.keys(err).length === 0;
+    };
+
     // Handle cart redux
     const dispatch = useDispatch()
     const cart = useSelector(state=>state.cart)
     const handleAddToCart = ()=>{
+        if(!validateOrder()) return 
         dispatch(addToCart(order))
         onClose()
 
     }
 
+    // Handle fetch sizes
+    const [sizes,setSizes] = React.useState([])
+    const handleSizeChange = (e) => {
+
+        const selectedSizeId = e.target.value; 
+        const selectedSize = sizes.find(size => size._id === selectedSizeId); 
+        
+        if (selectedSize) {
+            const newTotal = order.total - (order.size?.priceAddition || 0) + selectedSize.priceAddition;
+            setOrder((prev) => ({
+                ...prev,
+                size: selectedSize,
+                total: newTotal
+            }));
+        }
+    };
+    const fetchSizes = async()=>{
+        const response = await sizeService.getAllSizes()
+        if(!response.err){
+            setSizes(response.data.result.sizes)
+        }else{
+            console.error(response.err)
+        }
+    }
 
     // Handle order
-    const [order,setOrder] = React.useState({
-        'product':product,
-        'quantity': 1,
-        'size': 'small',
-        'topping': [],
-        'total':  product.price 
-    })
-    const [toppings,setToppings] = React.useState([])
-    const handleSizeChange = (e)=>{
-        setOrder((prev)=>({...prev,size : e.target.value}))
-    }
+    const [order, setOrder] = React.useState(() => {
+        const initialSize = sizes?.length > 0 ? sizes[0] : {};
+        return {
+            product: product,
+            quantity: 1,
+            size: initialSize,  
+            toppings: [],
+            total: product.price + (initialSize.priceAddition || 0) 
+        };
+    });
     const updateQuantity = (newQuantity)=>{
         setOrder((prev)=>({...prev,quantity: newQuantity,total : product.price * newQuantity}))
     }
 
 
-
+    //Handle fetch toppings
+    const [toppings,setToppings] = React.useState([])
     const fetchToppings  = async()=>{
 
         const response = await toppingService.getToppingsByIds(product.toppingIds)
@@ -45,13 +85,37 @@ const ProductDetails = ({isOpen,onClose,product})=>{
             setToppings(response.data.result.toppings)
         }
     }
+    const handleToppingChange = async(selectedTopping,amount)=>{
+
+        const existTopping = order.toppings.find(topping=>topping._id === selectedTopping._id)
+
+        if (existTopping) {
+
+            const newQuantity = existTopping.quantity + amount;
+            if(newQuantity < 0) return 
+            const updatedToppings = order.toppings.map(topping => 
+                topping._id === selectedTopping._id ? { ...topping,quantity: newQuantity } : topping
+            );
+            
+            setOrder((prev) => ({ ...prev, toppings: updatedToppings,total: prev.total + amount*existTopping.priceAddition }));
+        } else {
+
+            if(amount <= 0) return 
+
+            setOrder((prev) => ({
+                ...prev,
+                toppings: [...prev.toppings, { ...selectedTopping, quantity:amount },],
+                total: prev.total + amount*selectedTopping.priceAddition            
+            }));
+        }
+    }
 
 
     const dialog = React.useRef(null)
 
 
     React.useEffect(()=>{
-        
+        fetchSizes()
         fetchToppings()
         const handleClickOutside = (e)=>{
             if(dialog.current && !dialog.current.contains(e.target)){
@@ -112,42 +176,26 @@ const ProductDetails = ({isOpen,onClose,product})=>{
                     <div className=''>
                         <h1 className='bg-gray-300 px-5 text-xs font-medium text-gray-600 py-3'>SELECT SIZE (REQUIRED)</h1>
                         <div className='grid-cols-2 grid p-5 '>
-                            <div className='flex py-2 '>
-                                <input 
-                                onChange={handleSizeChange}
-                                checked = {order.size ==='small'} 
-                                className='w-6 h-6'
-                                type="radio" value ='small' name="" id="" />
-                                <div className='px-3'>
-                                    <h1>Small</h1>
-                                    <h1>+ 0d</h1>
-                                </div>
-                            </div>
+                            {
+                                sizes?.map((size,index)=>(
+                                    <div key={index} className='flex py-2 '>
+                                        <input 
+                                        onChange={handleSizeChange}
+                                        checked = {order.size?._id === size._id} 
+                                        className='w-6 h-6'
+                                        type="radio" 
+                                        value ={size._id} name="size" id="" />
+                                        <div className='px-3'>
+                                            <h1>{size.name}</h1>
+                                            <h1>+ {size.priceAddition} d</h1>
+                                        </div>
+                                    </div>
                             
-                            <div className='flex py-2 '>
-                                <input 
-                                onChange={handleSizeChange}
-                                checked = {order.size ==='fit'} 
-                                className='w-6 h-6'
-                                type="radio" value ='fit' name="" id="" />
-                                <div className='px-3'>
-                                    <h1>Fit</h1>
-                                    <h1>+ 6000 VND</h1>
-                                </div>
-                            </div> 
-
-                            <div className='flex py-2 '>
-                                <input
-                                onChange={handleSizeChange}
-                                checked = {order.size ==='big'} 
-                                className='w-6 h-6'
-                                type="radio" value ='big' name="" id="" />
-                                <div className='px-3'>
-                                    <h1>Big</h1>
-                                    <h1>+ 10000 VND</h1>
-                                </div>
-                            </div>
+                                ))
+                            }
+                            
                         </div>
+                        <p className='text-red-500 text-xs px-5'>*{errors.size}</p>
                     </div>
                     <div className=''>
                         <h1 className='bg-gray-300 px-5 text-xs font-medium text-gray-600 py-3'>CHOOSE TOPPING (OPTIONAL)
@@ -163,9 +211,13 @@ const ProductDetails = ({isOpen,onClose,product})=>{
                                             </div>
                                             <div className='flex'>
             
-                                                <button className='w-6 h-6 border-gray-200 border-2 rounded-full text-gray-200 text-2xl flex items-center justify-center leading-none'>-</button>
-                                                <h1 className='px-3'>0</h1>
-                                                <button className='w-6 h-6 border-gray-200 border-2 rounded-full text-gray-200 text-2xl flex items-center justify-center leading-none'>+</button>
+                                                <button 
+                                                onClick={()=>handleToppingChange(topping,-1)}
+                                                className='w-6 h-6  border-gray-200 border-2 rounded-full text-gray-200 text-2xl flex items-center justify-center leading-none'>-</button>
+                                                <h1 className='px-3'>{order.toppings.find( item => item._id === topping._id )?.quantity || 0}</h1>
+                                                <button 
+                                                onClick={()=>handleToppingChange(topping,+1)}
+                                                className='w-6 h-6 border-gray-200 border-2 rounded-full text-gray-200 text-2xl flex items-center justify-center leading-none'>+</button>
             
                                             </div>
                                         </div>

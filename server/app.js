@@ -7,7 +7,7 @@ const productRouter = require('./routers/productRouter')
 const authRouter = require('./routers/authRouter')
 const categoryRouter = require('./routers/categoryRouter')
 const toppingRouter = require('./routers/toppingRouter')
-
+const sizeRouter = require('./routers/sizeRouter')
 
 const appErrorHandler = require('./utils/appErrorHandler')
 
@@ -25,6 +25,7 @@ app.use('/auth',authRouter)
 app.use('/products',productRouter)
 app.use('/users',userRouter)
 app.use('/categories',categoryRouter)
+app.use('/sizes',sizeRouter)
 
 app.use(appErrorHandler)
 
