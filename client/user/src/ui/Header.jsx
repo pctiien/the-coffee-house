@@ -2,23 +2,44 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import VoucherList from '../pages/voucher/VoucherList';
 import {useSelector} from 'react-redux'
+import Login from '../pages/auth/Login'
+import {useAuth} from '../utils/hooks/useAuth'
 const Header = ()=>{
 
+    const Auth = useAuth()
+    
     const cartSize = useSelector((state)=>state.cart.items.reduce((acc,item)=>acc+=item.quantity,0))
-
+    const [openDropDown,setOpenDropDown] = React.useState(false)
+    const handleOpenDropDown = (e)=>{
+        e.preventDefault()
+        e.stopPropagation()
+        setOpenDropDown(!openDropDown)
+    }
     const [activeItem, setActiveItem] = React.useState('')
 
     const [openDialog,setOpenDialog] = React.useState(false)
 
+    const [openLoginDialog,setOpenLoginDialog] = React.useState(false)
     const handleClick = (item)=>{
         setActiveItem(item)
     }
     const handleCloseDialog = ()=>{
         setOpenDialog(false)
     }
-    const handleOpenDialog = ()=>{
-        setOpenDialog(true)
+    const handleCloseLoginDialog = ()=>{
+        setOpenLoginDialog(false)
     }
+    const handleShowLoginDialog = ()=>{
+        setOpenLoginDialog(true)
+
+    }
+    
+    const handleLogout = ()=>{
+        Auth.userLogout()
+        console.log(Auth.getUser())
+        setOpenLoginDialog(false)
+    }
+
 
 
     return (
@@ -59,13 +80,37 @@ const Header = ()=>{
 
                 <div className = "flex gap-4 ">
 
-                    <div className ="text-white text-sm font-semibold">
-                        <Link 
-                        to="/" >
-                            <img 
+                    <div 
+                    onClick = {handleOpenDropDown}
+                    className ="cursor-pointer text-white text-sm font-semibold relative">
+                        <img 
                             className = "w-10 h-10"
                             src="./user.png" alt="" />
-                        </Link>
+                        <div className ={`w-max bg-white flex flex-col gap-3  text-gray-500  rounded-lg shadow-lg p-3 absolute ${openDropDown ?'visible' : 'hidden'}`}>
+                            <div>
+                                <h1>{Auth.getUser()?.name}</h1>
+                                <h1>{Auth.getUser()?.phone}</h1>
+
+                            </div>
+                            <div 
+                            onClick = {handleShowLoginDialog}
+                            className={`flex px-5 gap-2 ${Auth.getUser() ?'hidden' : 'visible'}  `}>
+                            
+                                <img 
+                                className='w-4 rotate-180 '
+                                src="./login.png" alt="" />
+                                <h1>Login</h1>
+                            </div>
+                            <div 
+                            onClick={handleLogout}
+                            className={` flex px-5 gap-2 ${Auth.getUser() ?'visible' : 'hidden'}  `}>
+                            
+                                <img 
+                                className='w-4  '
+                                src="./login.png" alt="" />
+                                <h1>Logout</h1>
+                            </div>
+                        </div>
                     </div>
 
                     <div className ="relative text-white text-sm font-semibold bg-white rounded-full">
@@ -81,6 +126,8 @@ const Header = ()=>{
             
             </div>
         <VoucherList isOpen ={openDialog} onClose ={handleCloseDialog}/>
+        <Login isOpen ={openLoginDialog} onClose ={handleCloseLoginDialog}/>
+
         </>
     )
 }
