@@ -101,16 +101,16 @@ const tokenFilter = async(req,res,next)=>{
     next()
 }
 
-const restrictTo = (...roles)=>{
-    return (req,res,next)=>{
-        if(!roles.includes(req.user.role))
-        {
-            return next(new AppError('You dont have permission to access this',403))
+const restrictTo = (...roles) => {
+    return (req, res, next) => {
+
+        if (!req.user || !roles.some(role => req.user.role.includes(role))) {
+            return next(new AppError('You don\'t have permission to access this', 403));
         }
         next();
+    };
+};
 
-    }
-}
 
 
 module.exports = {signUp,login,tokenFilter,restrictTo}
