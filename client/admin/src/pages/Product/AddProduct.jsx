@@ -68,20 +68,20 @@ const Product = ()=>{
         if(validProductFormData())
         {
 
-            try{
-                const response = await productService.addNewProduct(productFormData)
+            const response = await productService.addNewProduct(productFormData)
+            if(response.err)
+            {
+                alert(response.err.response.data.message)
+            }else{
                 setProductFormData({
                     name: '',
                     price : '',
                     categoryId: '',
                     toppingIds: [],
                     description: ''
-                })
-                console.log(response)
-            }catch(e)
-            {
-                console.log(e.message)
+            })
             }
+            
         }
         
     }

@@ -72,7 +72,7 @@ const EditProductDialog = ({isOpen,onClose,product,afterUpdate})=>{
             
             if(response.err)
             {
-                console.error(response.err)
+                alert(response.err.response.data.message)
             }else{
                 console.log(response)
             }

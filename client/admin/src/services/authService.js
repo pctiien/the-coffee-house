@@ -1,34 +1,22 @@
 import axiosClient from './axios'
-
-const signUp = async (user)=>{
-    return await axiosClient.post('/auth/signup',user)
-            .then(response=>{
-                return {
-                    data: response.data,
-                }
-            })
-            .catch(err=>{
-                return {
-                    data: null,
-                    message: err.message
-                }
-            })
+import {jwtDecode} from 'jwt-decode'
+const logIn = async(data)=>{
+    return await axiosClient.post('/auth/login',data)
+                    .then(response=>{
+                        const token = response.data.token
+                        const user = jwtDecode(token)
+                        return {
+                            data: {
+                                user,
+                                token
+                            }
+                        }
+                    })
+                    .catch(err=>{
+                        return {
+                            data: null,
+                            err
+                        }
+                    })
 }
-
-const login = async(user)=>{
-    return await axiosClient.post('/auth/login',user)
-        .then(
-            response=>{
-                return {
-                    message : response.message
-                }
-        })
-        .catch(
-            err =>{
-                return {
-                    err
-                }
-            }
-        )
-}
-export {signUp,login}
+export default {logIn}
