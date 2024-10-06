@@ -1,9 +1,16 @@
 const mongoose = require('mongoose')
-
+const AppError = require('../utils/appError')
 const userSchema = new mongoose.Schema({
     email : {
         type: String,
-        required : true
+        required : true,
+        unique : true
+    },
+    phone : {
+        type: String,
+        required : true,
+        unique : true
+
     },
     password : {
         type: String,
@@ -30,14 +37,14 @@ const userSchema = new mongoose.Schema({
 userSchema.pre('save',function(next){
 
     if(this.password.length < 6){
-        return next(new Error('Password must be at least 6 characters long'))
+        return next(new AppError('Password must be at least 6 characters long',400))
     }
 
     const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
 
     if(!emailRegex.test(this.email))
     {
-        return next(new Error('Invalid email format'))
+        return next(new AppError('Invalid email format',400))
     }
 
     next()
