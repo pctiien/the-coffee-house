@@ -12,7 +12,7 @@ const ProductList = ({category})=>{
             const response = await productService.getProductsByCategoryId(category._id)
             if(response.err)
             {
-                console.err(response.err)
+                console.error(response.err)
             }else{
                 setProductList(response.data.result.products)
             }
