@@ -13,9 +13,7 @@ on:
 
 env:
   REGISTRY: docker.io
-  TAGS: ${{ github.ref_name }}  
-  IMAGE_NAME: ${{ secrets.DOCKER_USER }}/the-coffee-house-fe_user:${{env.TAGS}}
-
+  IMAGE_NAME: ${{ secrets.DOCKER_USER }}/the-coffee-house-fe_user:${{ github.ref_name }}
 jobs:
   build:
 
