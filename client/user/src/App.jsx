@@ -6,7 +6,6 @@ import Store from './pages/store/Store'
 import Recruit from './pages/recruit/Recruit'
 import AppLayout from './ui/AppLayout'
 import Cart from './pages/cart/Cart'
-import Login from './pages/auth/Login'
 const App = () => {
   return (
     <>
