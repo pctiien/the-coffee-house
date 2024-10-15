@@ -47,8 +47,8 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ env.IMAGE_NAME }}
           labels: commit=${{ github.sha }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: ''
+          cache-to: ''
 
   
   
