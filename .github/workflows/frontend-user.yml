@@ -3,9 +3,13 @@ name: Docker
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - server/**
     tags: [ 'v*' ]
   pull_request:
     branches: [ "main" ]
+    paths:
+      - server/**
 
 env:
   REGISTRY: docker.io
