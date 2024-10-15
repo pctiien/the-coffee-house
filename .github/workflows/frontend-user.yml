@@ -4,12 +4,12 @@ on:
   push:
     branches: [ "main" ]
     paths:
-      - server/**
+      - client/user/**
     tags: [ 'v*' ]
   pull_request:
     branches: [ "main" ]
     paths:
-      - server/**
+      - client/user/**
 
 env:
   REGISTRY: docker.io
