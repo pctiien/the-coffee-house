@@ -2,14 +2,14 @@ name: CICD for the coffee hosue frontend-user project
 
 on:
   push:
-    branches: [ "main" ]
-    paths:
-      - client/user/**
+    # branches: [ "main" ]
+    # paths:
+    #   - client/user/**
     tags: [ 'v*' ]
-  pull_request:
-    branches: [ "main" ]
-    paths:
-      - client/user/**
+  # pull_request:
+  #   branches: [ "main" ]
+  #   paths:
+  #     - client/user/**
   workflow_dispatch:  
 env:
   REGISTRY: docker.io
