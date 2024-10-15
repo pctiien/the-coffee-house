@@ -1,4 +1,4 @@
-name: Docker
+name: CICD for the coffee hosue frontend-user project
 
 on:
   push:
