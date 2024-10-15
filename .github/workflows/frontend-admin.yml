@@ -2,14 +2,14 @@ name: CICD for the coffee house frontend-admin project
 
 on:
   push:
-    branches: [ "main" ]
+    # branches: [ "main" ]
     tags: [ 'v*' ]
-    paths:
-      - client/admin/**
-  pull_request:
-    branches: [ "main" ]
-    paths:
-      - client/admin/**
+    # paths:
+    #   - client/admin/**
+  # pull_request:
+  #   branches: [ "main" ]
+  #   paths:
+  #     - client/admin/**
   workflow_dispatch:  
 env:
   REGISTRY: docker.io
