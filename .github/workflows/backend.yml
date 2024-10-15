@@ -2,14 +2,14 @@ name: CI/CD for the coffee house backend
 
 on:
   push:
-    branches: [ "main" ]
+    # branches: [ "main" ]
     tags: [ 'v*' ]
-    paths:
-      - server/**
-  pull_request:
-    branches: [ "main" ]
-    paths:
-      - server/**  
+    # paths:
+    #   - server/**
+  # pull_request:
+  #   branches: [ "main" ]
+  #   paths:
+  #     - server/**  
   workflow_dispatch:  
 
 env:
