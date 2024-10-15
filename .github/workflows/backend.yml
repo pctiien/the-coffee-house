@@ -13,9 +13,7 @@ on:
 
 env:
   REGISTRY: docker.io
-  TAGS: $GITHUB_REF
-  COMMIT: $GITHUB_SHA
-  IMAGE_NAME: ${{ secrets.DOCKER_USER }}/the-coffee-house:${{env.TAGS}}_${{env.COMMIT}}
+  IMAGE_NAME: ${{ secrets.DOCKER_USER }}/the-coffee-house:${{ github.ref_name }}_${{ github.sha }} 
 
 jobs:
   build:
@@ -49,7 +47,7 @@ jobs:
           context: ./server
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ env.IMAGE_NAME }}
-          labels: commit=${{ env.COMMIT }}
+          labels: commit=${{ github.sha }} 
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
