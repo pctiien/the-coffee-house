@@ -1,4 +1,4 @@
-name: Docker
+name: CICD for the coffee house frontend-admin project
 
 on:
   push:
@@ -14,7 +14,7 @@ env:
   REGISTRY: docker.io
   TAGS: $GITHUB_REF
   COMMIT: $GITHUB_SHA
-  FE_ADMIN_IMAGE_NAME: ${{ secrets.DOCKER_USER }}/the-coffee-house-fe_admin:${{env.TAGS}}_${{env.COMMIT}}
+  IMAGE_NAME: ${{ secrets.DOCKER_USER }}/the-coffee-house-fe_admin:${{env.TAGS}}_${{env.COMMIT}}
 
 jobs:
   build:
@@ -47,7 +47,7 @@ jobs:
         with:
           context: ./client/admin
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ env.TAGS }}
+          tags: ${{ env.IMAGE_NAME }}
           labels: commit=${{ env.COMMIT }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
