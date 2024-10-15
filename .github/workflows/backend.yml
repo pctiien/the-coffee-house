@@ -10,6 +10,7 @@ on:
     branches: [ "main" ]
     paths:
       - server/**  
+  workflow_dispatch:  
 
 env:
   REGISTRY: docker.io
