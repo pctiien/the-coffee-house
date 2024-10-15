@@ -10,6 +10,7 @@ on:
     branches: [ "main" ]
     paths:
       - client/admin/**
+  workflow_dispatch:  
 env:
   REGISTRY: docker.io
   IMAGE_NAME: ${{ secrets.DOCKER_USER }}/the-coffee-house-fe_admin:${{ github.ref_name }} 
