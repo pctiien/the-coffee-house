@@ -17,7 +17,7 @@ const Product = ({item})=>{
                 <div>
                     <img
                     className='w-40 h-40 rounded-lg' 
-                    src={item.img} alt="" />
+                    src={item.imageUrl} alt="" />
                 </div>
                 <h1 className='w-40 h-16 mt-3 text-sm font-medium text-gray-900 overflow-hidden'>
                     {item.name} 
