@@ -31,8 +31,8 @@ const getAllProducts = async (req,res,next)=>{
 const createProduct = async(req,res,next)=>{
     
     try{
-
         const file = req.file
+        
         if(!file) return next(new AppError("Product image is missing",400))
             
         const imgUrl = await uploadImg('product',file)
@@ -62,17 +62,34 @@ const createProduct = async(req,res,next)=>{
 // Update product - PATCH .../productId
 
 const updateProduct = async(req,res,next)=>{
+    const file = req.file
+    let imgUrl = ''
 
+    if(file){
+        imgUrl = await uploadImg('product',file)
+        if(!imgUrl)
+        {
+            return next(new AppError("Error when uploading product image"))
+        }
+    }
+            
     const updateInfo = req.body 
 
-    const product = await Product.findByIdAndUpdate(req.params.id,{
-        price : updateInfo.price,
-        name : updateInfo.name,
-        categoryId : updateInfo.categoryId,
-        toppingIds : updateInfo.toppingIds,
-        description: updateInfo.description 
-    },{
-        new: true
+    const updateFields = {
+        price: updateInfo.price,
+        name: updateInfo.name,
+        categoryId: updateInfo.categoryId,
+        toppingIds: updateInfo.toppingIds,
+        description: updateInfo.description,
+    };
+
+    if (imgUrl) {
+        updateFields.imageUrl = imgUrl;
+    }
+
+    const product = await Product.findByIdAndUpdate(req.params.id,updateFields,{
+        new: true,
+        runValidators: true
     })
 
     if(!product) res.status(400).json({

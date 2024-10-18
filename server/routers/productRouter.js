@@ -15,7 +15,7 @@ router.route('/').get(productController.getAllProducts)
 
 router.route('/').post(authController.tokenFilter,authController.restrictTo('admin'),upload.single("productImage"),productController.createProduct)
 
-router.route('/:id').patch(authController.tokenFilter,authController.restrictTo('admin'),productController.updateProduct)
+router.route('/:id').patch(authController.tokenFilter,authController.restrictTo('admin'),upload.single("productImage"),productController.updateProduct)
 
 router.route('/:id').delete(authController.tokenFilter,authController.restrictTo('admin'),productController.deleteProduct)
 
