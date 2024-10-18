@@ -160,7 +160,7 @@ const ProductList = ()=>{
                                                 <td>
                                                     <img
                                                     className= 'w-10 h-10' 
-                                                    src={product.img} alt="" />
+                                                    src={product.imageUrl} alt="" />
                                                 </td>
                                                 <td>
                                                     {product.price}
