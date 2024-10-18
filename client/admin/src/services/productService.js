@@ -16,7 +16,9 @@ const getAllProducts = async(limit=10,page=1)=>{
 }
 
 const addNewProduct = async(productData)=>{
-    return await axiosClient.post('/products',productData)
+    return await axiosClient.post('/products',productData,{
+        headers:{ 'content-type': 'multipart/form-data' }
+    })
             .then(response=>{
                 return {
                     data: response.data
@@ -31,7 +33,9 @@ const addNewProduct = async(productData)=>{
 }
 
 const updateProduct = async(productId,productData)=>{
-    return await axiosClient.patch(`/products/${productId}`,productData)
+    return await axiosClient.patch(`/products/${productId}`,productData,{
+        headers:{ 'content-type': 'multipart/form-data' }
+    })
             .then(response =>{
                 return {
                     data: response.data,

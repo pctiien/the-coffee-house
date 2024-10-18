@@ -5,7 +5,21 @@ import productService from '../../services/productService'
 
 
 const EditProductDialog = ({isOpen,onClose,product,afterUpdate})=>{
+
+    // Handle input files 
+    const fileInputRef = React.useRef(null)  
     
+    const openFileInput = ()=>{
+        fileInputRef.current.click()
+    }
+
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            console.log('File đã chọn:', file);
+            setProductFormData({...productFormData, productImage: file})
+        }
+    }
     const dialogRef = React.useRef(null)
 
     const [toppings,setToppings] = React.useState([])
@@ -19,6 +33,7 @@ const EditProductDialog = ({isOpen,onClose,product,afterUpdate})=>{
         description: product?.description || '',
         categoryId: product?.categoryId || '',
         toppingIds: product?.toppingIds || [],
+        productImage: null
     });    
     
     const [errorProductFormData,setErrorProductFormData] = React.useState({})
@@ -68,6 +83,7 @@ const EditProductDialog = ({isOpen,onClose,product,afterUpdate})=>{
             const { _id, ...updatedProductData } = productFormData;
 
             const response = await productService.updateProduct(_id,updatedProductData)
+
             afterUpdate()
             
             if(response.err)
@@ -266,22 +282,34 @@ const EditProductDialog = ({isOpen,onClose,product,afterUpdate})=>{
 
                             </div>
                             <div className="mt-5 flex flex-col gap-2">
-                                <span className="flex gap-1 ">
-                                    <h1 className="font-bold text-sm">Upload images</h1>
-                                    <h1 className="text-red-500">*</h1>
+                            <span className="flex gap-1 ">
+                                <h1 className="font-bold text-sm">Upload images</h1>
+                                <h1 className="text-red-500">*</h1>
 
-                                </span>                            
-                                <div className="cursor-pointer border-dashed border rounded-xl flex flex-col justify-center items-center gap-2 p-5 py-10">
-                                    <img 
-                                    className="w-10 h-10"
-                                    src="/upload.png" alt="" />
-                                    <span className="text-sm text-gray-500"  >
-                                        <p className=" inline-block">Drop your images here or select </p>
-                                        <p className=" inline-block ml-1 text-blue-600">click to browse</p>
-                                    </span>
-                                </div>
-                                <p className="text-xs text-gray-500">You need to add at least 1 images. Pay attention to the quality of the pictures you add, comply with the background color standards. Pictures must be in certain dimensions. Notice that the product shows all the details</p>
+                            </span>                            
+                            <div 
+                            onClick={openFileInput}
+                            className="cursor-pointer border-dashed border rounded-xl flex flex-col justify-center items-center gap-2 p-5 py-10">
+                                <img 
+                                className={`${productFormData.productImage 
+                                    ? 'w-full h-full'
+                                    : "w-10 h-10" }`}
+                                src={`${productFormData.productImage 
+                                    ? URL.createObjectURL(productFormData.productImage) 
+                                    : "/upload.png" }`} alt="Product's image" />
+                                <input
+                                onChange={handleFileChange} 
+                                ref={fileInputRef}
+                                style={{ display: 'none' }} type="file"  id="fileInput" accept="image/*"  />
+                                <span 
+                                className="text-sm text-gray-500"  >
+                                    <p className=" inline-block">Drop your images here or select </p>
+                                    <p className=" inline-block ml-1 text-blue-600">click to browse</p>
+                                </span>
                             </div>
+                            <p className="text-xs text-red-500">{errorProductFormData.image}</p>
+                            <p className="text-xs text-gray-500">You need to add at least 1 images. Pay attention to the quality of the pictures you add, comply with the background color standards. Pictures must be in certain dimensions. Notice that the product shows all the details</p>
+                        </div>
                             <div className='flex gap-2 '>
                                 <div className="mt-5 flex-1 flex bg-blue-500 p-3 px-5 text-center rounded-xl text-white font-semibold ">
                                     <button

@@ -5,6 +5,21 @@ import productService from '../../services/productService'
 
 const Product = ()=>{
 
+    // Handle input files 
+    const fileInputRef = React.useRef(null)  
+    
+    const openFileInput = ()=>{
+        fileInputRef.current.click()
+    }
+
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            console.log('File đã chọn:', file);
+            setProductFormData({...productFormData, productImage: file})
+        }
+    }
+
     const [toppings,setToppings] = React.useState([])
 
     const [categories,setCategories] = React.useState([])
@@ -14,7 +29,8 @@ const Product = ()=>{
         price : '',
         categoryId: '',
         toppingIds: [],
-        description: ''
+        description: '',
+        productImage: null,
     })
 
     const [errorProductFormData,setErrorProductFormData] = React.useState({})
@@ -45,7 +61,9 @@ const Product = ()=>{
         if (productFormData.name.length <= 0) {
             errors.name = 'Product name must be at least one character';
         }
-
+        if (!productFormData.productImage) {
+            errors.image = 'Product image is missing';
+        }
         const price = parseFloat(productFormData.price);
         if (isNaN(price) || price <= 1) {
             errors.price = 'Product price must be over 1';
@@ -67,7 +85,13 @@ const Product = ()=>{
 
         if(validProductFormData())
         {
-
+            const formData = new FormData()
+            formData.append('name', productFormData.name);
+            formData.append('price', productFormData.price);
+            formData.append('categoryId', productFormData.categoryId);
+            formData.append('toppingIds', JSON.stringify(productFormData.toppingIds));
+            formData.append('description', productFormData.description);
+            formData.append('productImage', productFormData.productImage);
             const response = await productService.addNewProduct(productFormData)
             if(response.err)
             {
@@ -78,7 +102,8 @@ const Product = ()=>{
                     price : '',
                     categoryId: '',
                     toppingIds: [],
-                    description: ''
+                    description: '',
+                    productImage : null
             })
             }
             
@@ -243,15 +268,27 @@ const Product = ()=>{
                                 <h1 className="text-red-500">*</h1>
 
                             </span>                            
-                            <div className="cursor-pointer border-dashed border rounded-xl flex flex-col justify-center items-center gap-2 p-5 py-10">
+                            <div 
+                            onClick={openFileInput}
+                            className="cursor-pointer border-dashed border rounded-xl flex flex-col justify-center items-center gap-2 p-5 py-10">
                                 <img 
-                                className="w-10 h-10"
-                                src="/upload.png" alt="" />
-                                <span className="text-sm text-gray-500"  >
+                                className={`${productFormData.productImage 
+                                    ? 'w-1/2 h-1/2'
+                                    : "w-10 h-10" }`}
+                                src={`${productFormData.productImage 
+                                    ? URL.createObjectURL(productFormData.productImage) 
+                                    : "/upload.png" }`} alt="" />
+                                <input
+                                onChange={handleFileChange} 
+                                ref={fileInputRef}
+                                style={{ display: 'none' }} type="file"  id="fileInput" accept="image/*"  />
+                                <span 
+                                className="text-sm text-gray-500"  >
                                     <p className=" inline-block">Drop your images here or select </p>
                                     <p className=" inline-block ml-1 text-blue-600">click to browse</p>
                                 </span>
                             </div>
+                            <p className="text-xs text-red-500">{errorProductFormData.image}</p>
                             <p className="text-xs text-gray-500">You need to add at least 1 images. Pay attention to the quality of the pictures you add, comply with the background color standards. Pictures must be in certain dimensions. Notice that the product shows all the details</p>
                         </div>
                         <div className="mt-5  bg-blue-500 p-3 px-5 text-center rounded-xl text-white font-semibold">
