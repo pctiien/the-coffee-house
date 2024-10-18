@@ -1,9 +1,10 @@
 const Product = require('../models/Product')
 const QueryHelper = require('../utils/QueryHelper')
+const {uploadImg} = require('../utils/s3')
+const AppError = require('../utils/appError')
 
 //Get all products - GET method .../
 const getAllProducts = async (req,res,next)=>{
-    
     try{
         const queryHelper = new QueryHelper(Product.find(),req.query).executeQuery()
 
@@ -29,11 +30,32 @@ const getAllProducts = async (req,res,next)=>{
 //Create a product - POST method .../
 const createProduct = async(req,res,next)=>{
     
-    const product = await Product.create(req.body)
-    res.status(201).json({
-        status: 'success',
-        data : product 
-    })
+    try{
+
+        const file = req.file
+        if(!file) return next(new AppError("Product image is missing",400))
+            
+        const imgUrl = await uploadImg('product',file)
+        if(!imgUrl)
+        {
+            return next(new AppError("Error when uploading product image"))
+        }
+
+        const product = await Product.create(
+            {
+                ...req.body,
+                imageUrl: imgUrl
+            }
+        )
+        res.status(201).json({
+            status: 'success',
+            data : product 
+        })
+
+    }catch(err)
+    {
+        next(err)
+    }
 
 }
 

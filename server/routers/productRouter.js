@@ -6,9 +6,14 @@ const productController = require('../controllers/productController')
 
 const authController = require('../controllers/authController')
 
+const multer = require("multer");
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
 router.route('/').get(productController.getAllProducts)
 
-router.route('/').post(authController.tokenFilter,authController.restrictTo('admin'),productController.createProduct)
+router.route('/').post(authController.tokenFilter,authController.restrictTo('admin'),upload.single("productImage"),productController.createProduct)
 
 router.route('/:id').patch(authController.tokenFilter,authController.restrictTo('admin'),productController.updateProduct)
 
