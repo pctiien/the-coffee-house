@@ -1,6 +1,6 @@
 const Product = require('../models/Product')
 const QueryHelper = require('../utils/QueryHelper')
-const {uploadImg} = require('../utils/s3')
+const {uploadImg,deleteImg} = require('../utils/s3')
 const AppError = require('../utils/appError')
 
 //Get all products - GET method .../
@@ -62,10 +62,25 @@ const createProduct = async(req,res,next)=>{
 // Update product - PATCH .../productId
 
 const updateProduct = async(req,res,next)=>{
+
     const file = req.file
     let imgUrl = ''
 
+    const product = await Product.findById(req.params.id)
+
+    if(!product) return next(new AppError('Product not found'))
+
     if(file){
+
+        if(product.imageUrl)
+        {
+            try {
+                await deleteImg(product.imageUrl)
+            } catch (error) {
+                return next(new AppError('Error deleting image'))
+            }
+        }
+
         imgUrl = await uploadImg('product',file)
         if(!imgUrl)
         {
@@ -83,23 +98,23 @@ const updateProduct = async(req,res,next)=>{
         description: updateInfo.description,
     };
 
-    if (imgUrl) {
+    if (imgUrl.trim().length>0) {
         updateFields.imageUrl = imgUrl;
     }
 
-    const product = await Product.findByIdAndUpdate(req.params.id,updateFields,{
-        new: true,
-        runValidators: true
-    })
+    Object.assign(product,updateFields)
+    try {
+        await product.save();
+    } catch (error) {
+        return next(new AppError('Error when updating product', 500));
+    }
 
-    if(!product) res.status(400).json({
-        status: 'fail',
-        message: 'Product not found'
-    })
 
     res.status(200).json({
         status: 'success',
-        message: 'Product updated successfully'
+        result : {
+            product
+        }
     })
         
 }
@@ -110,6 +125,15 @@ const updateProduct = async(req,res,next)=>{
 const deleteProduct = async(req,res,next)=>{
 
     const product = await Product.findByIdAndDelete(req.params.id)
+    if(product.imageUrl)
+    {
+        try {
+            await deleteImg(product.imageUrl)
+        } catch (error) {
+            return next(new AppError('Error deleting image'))
+        }
+    }
+
     if(!product)
     {
         res.status(400).json({

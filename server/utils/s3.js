@@ -1,4 +1,4 @@
-const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
+const { S3Client, PutObjectCommand,DeleteObjectCommand  } = require("@aws-sdk/client-s3");
 const dotenv = require("dotenv");
 
 dotenv.config({path:"./config.env"})
@@ -24,4 +24,14 @@ const uploadImg = async(folder,file)=>{
 
     return `https://${process.env.AWS_S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${params.Key}`
 }
-module.exports = {uploadImg}
+const deleteImg = async(filepath)=>{
+    const params = {
+        Bucket: process.env.AWS_S3_BUCKET,
+        Key: filepath.split('.com/')[1]
+    }
+    const cmd = new DeleteObjectCommand(params)
+    await s3Client.send(cmd)
+
+}
+
+module.exports = {uploadImg,deleteImg}
