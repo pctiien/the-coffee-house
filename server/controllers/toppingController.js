@@ -32,9 +32,9 @@ const getToppingsByIds = async (req,res,next)=>{
             });
         }
 
-        const toppingIds = ids.split(',')
+        const toppingIds = ids.split(',').map(id => id.trim())
 
-        for (let id of toppingIds) {
+        for (const  id of toppingIds) {
             if (!mongoose.Types.ObjectId.isValid(id)) {
                 return res.status(400).json({
                     status: 'fail',
@@ -43,7 +43,7 @@ const getToppingsByIds = async (req,res,next)=>{
             }
         }
         const toppings = await Topping.find({
-            _id: { $in: toppingIds.map(id =>new mongoose.Types.ObjectId(String(id))) } 
+            _id: { $in: toppingIds } 
         });
 
         res.status(200).json({
