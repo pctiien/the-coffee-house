@@ -80,9 +80,8 @@ const Product = ()=>{
 
 
 
-    const handleAddProduct = async ()=>{
+    const handleAddProduct = async (e)=>{
         
-
         if(validProductFormData())
         {
             const formData = new FormData()
@@ -92,21 +91,31 @@ const Product = ()=>{
             formData.append('toppingIds', JSON.stringify(productFormData.toppingIds));
             formData.append('description', productFormData.description);
             formData.append('productImage', productFormData.productImage);
-            const response = await productService.addNewProduct(productFormData)
-            if(response.err)
+
+            e.target.disabled = true
+            try{
+                const response = await productService.addNewProduct(productFormData)
+                if(response.err)
+                    {
+                        alert(response.err.response.data.message)
+                    }else{
+                        setProductFormData({
+                            name: '',
+                            price : '',
+                            categoryId: '',
+                            toppingIds: [],
+                            description: '',
+                            productImage : null
+                    })
+                    }
+            }catch(err)
             {
-                alert(response.err.response.data.message)
-            }else{
-                setProductFormData({
-                    name: '',
-                    price : '',
-                    categoryId: '',
-                    toppingIds: [],
-                    description: '',
-                    productImage : null
-            })
+                console.err(err.message)
+            }finally{
+                e.target.disabled = false
+
             }
-            
+
         }
         
     }
@@ -291,9 +300,9 @@ const Product = ()=>{
                             <p className="text-xs text-red-500">{errorProductFormData.image}</p>
                             <p className="text-xs text-gray-500">You need to add at least 1 images. Pay attention to the quality of the pictures you add, comply with the background color standards. Pictures must be in certain dimensions. Notice that the product shows all the details</p>
                         </div>
-                        <div className="mt-5  bg-blue-500 p-3 px-5 text-center rounded-xl text-white font-semibold">
+                        <div className="mt-5  text-center text-white font-semibold">
                             <button
-                            className='w-full'
+                            className='w-full  bg-blue-500 p-3 px-5 rounded-xl disabled:bg-gray-300 disabled:cursor-not-allowed  '
                                 onClick={handleAddProduct}
                             >Add product</button>
                         </div>

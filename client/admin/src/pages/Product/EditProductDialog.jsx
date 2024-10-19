@@ -74,15 +74,18 @@ const EditProductDialog = ({isOpen,onClose,product,afterUpdate})=>{
 
 
 
-    const handleUpdateProduct = async ()=>{
+    const handleUpdateProduct = async (e)=>{
         
 
         if(validProductFormData())
         {
-
+            e.target.disabled = true
             const { _id, ...updatedProductData } = productFormData;
 
+
             const response = await productService.updateProduct(_id,updatedProductData)
+            
+            e.target.disabled = false
 
             afterUpdate()
             
@@ -311,17 +314,17 @@ const EditProductDialog = ({isOpen,onClose,product,afterUpdate})=>{
                             <p className="text-xs text-gray-500">You need to add at least 1 images. Pay attention to the quality of the pictures you add, comply with the background color standards. Pictures must be in certain dimensions. Notice that the product shows all the details</p>
                         </div>
                             <div className='flex gap-2 '>
-                                <div className="mt-5 flex-1 flex bg-blue-500 p-3 px-5 text-center rounded-xl text-white font-semibold ">
+                                <div className="mt-5 flex-1 flex bg-blue-500 text-center rounded-xl text-white font-semibold ">
                                     <button
-                                    className='w-full'
+                                    className='w-full  bg-blue-500 p-3 px-5 rounded-xl disabled:bg-gray-300 disabled:cursor-not-allowed  '
                                     onClick={handleUpdateProduct}
                                     >Update product</button>
                                 </div>
                                 <div 
                                 onClick={onClose}
-                                className="mt-5 flex-1 flex   bg-gray-500 p-3 px-5 text-center rounded-xl text-white font-semibold ">
+                                className="mt-5 flex-1 flex   bg-gray-500 text-center rounded-xl text-white font-semibold ">
                                     <button
-                                    className='w-full'
+                                    className='w-full p-3 px-5'
                                     >Close</button>
                                 </div>
                             </div>

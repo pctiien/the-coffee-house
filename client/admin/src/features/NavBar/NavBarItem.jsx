@@ -16,9 +16,9 @@ const NavBarItem = ({isOpen,title,imgSrc,subItems})=>{
             <div className='' >
                 <div className={`cursor-pointer flex gap-2 px-2 rounded-xl  py-3 items-center group ${isOpen ? 'bg-blue-100 text-blue-600' :''}`}>
                     <img className="w-6 h-6 group-hover:text-blue-600" src={imgSrc} alt="" />
-                    <h1 className="group-hover:text-blue-600 text-sm">{title}</h1>
+                    <h1 className=" group-hover:text-blue-600 text-sm overflow-x-hidden  max-sm:hidden  ">{title}</h1>
                 </div>
-                <div className = {` ${ isOpen ? 'opacity-100 visible' : 'hidden'}`}>
+                <div className = {` ${ isOpen ? 'opacity-100 visible' : 'hidden'} max-sm:hidden `}>
                 <ul className='list-disc list-inside p-2'>
                     {
                         subItems?.map((item, index) => {

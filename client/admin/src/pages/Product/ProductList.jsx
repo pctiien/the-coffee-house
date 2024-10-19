@@ -168,12 +168,14 @@ const ProductList = ()=>{
                                                     {formattedDate(product.createdAt)}
                                                 </td>
                                                 <td className=" text-white">
-                                                    <button 
-                                                    onClick={()=>onOpenDialog(product)}
-                                                    className="bg-blue-500 p-2 rounded-lg px-5">Edit</button>
-                                                    <button 
-                                                    onClick={()=>onOpenDeleteDialog(product)}
-                                                    className="ml-2 bg-red-500 p-2 rounded-lg px-5">Delete</button>
+                                                    <div className="flex">
+                                                        <button 
+                                                        onClick={()=>onOpenDialog(product)}
+                                                        className="bg-blue-500 p-2 rounded-lg px-5 ">Edit</button>
+                                                        <button 
+                                                        onClick={()=>onOpenDeleteDialog(product)}
+                                                        className="ml-2 bg-red-500 p-2 rounded-lg px-5">Delete</button>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         )

@@ -88,9 +88,9 @@ const NavBar = () => {
     };
     
     return (
-        <div className="p-5  shadow-xl w-1/6 h-screen ">
+        <div className="p-4  shadow-xl w-1/6 min-w-20  h-screen max-h-screen ">
             <div className="flex flex-col text-sm font-semibold justify-center">
-                <h1 className='uppercase text-gray-400 font-semibold text-sm mb-2'>All pages</h1>
+                <h1 className='uppercase text-gray-400 font-semibold text-lg  mb-2 text-center'>All pages</h1>
                 {
                     navState?.map((item,index)=>{
                         return (
