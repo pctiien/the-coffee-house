@@ -3,13 +3,18 @@ import ProductList from './ProductList';
 
 const Category = ({categories})=>{
 
-    const [activeItem,setActiveItem] = React.useState( categories ? categories[0] : '' )
+    const [activeItem,setActiveItem] = React.useState( categories  ? categories[0] : null )
 
     const handleClick = (item)=>{
         setActiveItem(item)
     }
 
-
+    React.useEffect(()=>{
+        if(!activeItem && categories.length > 0 )
+        {
+            setActiveItem(categories[0])
+        }
+    },[activeItem, categories])
 
 
     return (
@@ -28,7 +33,7 @@ const Category = ({categories})=>{
                                 key={index} className='cursor-pointer flex flex-col items-center text-center w-20 '>
                                     <img 
                                     style={{borderWidth:'16px'}}
-                                    className={`w-20 h-20 rounded-full border-orange-100 ${activeItem === cate ? 'border-orange-200' :''}`}
+                                    className={`w-20 h-20 rounded-full border-orange-100 ${activeItem?._id === cate?._id ? 'border-orange-200' :''}`}
                                     src={cate.img} alt="" />
                                     <h1 className='w-full text-gray-400 text-xs font-medium '>{cate.name}</h1>
                             </div>

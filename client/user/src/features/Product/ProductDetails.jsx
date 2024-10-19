@@ -23,7 +23,6 @@ const ProductDetails = ({isOpen,onClose,product})=>{
 
     // Handle cart redux
     const dispatch = useDispatch()
-    const cart = useSelector(state=>state.cart)
     const handleAddToCart = ()=>{
         if(!validateOrder()) return 
         dispatch(addToCart(order))
@@ -75,15 +74,16 @@ const ProductDetails = ({isOpen,onClose,product})=>{
     //Handle fetch toppings
     const [toppings,setToppings] = React.useState([])
     const fetchToppings  = async()=>{
-
+        setToppings([]); 
+        if (product.toppingIds.length <= 0) return 
         const response = await toppingService.getToppingsByIds(product.toppingIds)
-
         if(response.err)
         {
             console.error(response.err)
         }else{
             setToppings(response.data.result.toppings)
         }
+        
     }
     const handleToppingChange = async(selectedTopping,amount)=>{
 
@@ -115,8 +115,7 @@ const ProductDetails = ({isOpen,onClose,product})=>{
 
 
     React.useEffect(()=>{
-        fetchSizes()
-        fetchToppings()
+
         const handleClickOutside = (e)=>{
             if(dialog.current && !dialog.current.contains(e.target)){
                 onClose()
@@ -128,15 +127,23 @@ const ProductDetails = ({isOpen,onClose,product})=>{
         return ()=> window.removeEventListener('mousedown',handleClickOutside)
 
     },[onClose])
+    React.useEffect(()=>{
+        if(product)
+        {
+            fetchSizes()
+            fetchToppings()
+        }
+    },[product])
 
     if(!isOpen) return null
 
     return (
         <>
-            <div className='fixed inset-0 bg-black opacity-20 z-40'></div>
-            <div className='mt-4 fixed inset-0  flex flex-col items-center z-50 '>
-                <div 
-                className='border rounded-lg bg-white w-1/4 overflow-y-scroll'
+            <div className='fixed inset-0 bg-black opacity-45 z-40'></div>
+            <div className=' my-4 fixed inset-0  flex flex-col items-center z-50 '>
+                <div
+                style={{width: '28%'}} 
+                className='border rounded-lg bg-white overflow-y-scroll'
                 ref={dialog}>
                     <div className='flex justify-between border-b p-5'>
                         <img 
@@ -147,9 +154,9 @@ const ProductDetails = ({isOpen,onClose,product})=>{
                     <div className='p-5'>
                         <img 
                         className='rounded-lg w-full min-h-80 '
-                        src={product.img} alt="" />
+                        src={product.imageUrl} alt="" />
                         <h1 className='text-lg font-semibold py-2'>{product.name}</h1>
-                        <p className='text-xs text-gray-400'>Suitable choice for those who like strong matcha but are afraid of bitterness. *Stir well to enjoy the full flavor.
+                        <p className='text-sm text-gray-500'>{product.description}
                         </p>
                         <div className='flex justify-between items-center py-4'>
                             <h1>{product.price} VND</h1>
@@ -202,7 +209,7 @@ const ProductDetails = ({isOpen,onClose,product})=>{
                         </h1>
                         <div className=' p-5 '>
                             {
-                                toppings?.map((topping,index)=>{
+                                toppings.length>0 && toppings?.map((topping,index)=>{
                                     return (
                                         <div key={index} className='flex items-center justify-between border-b py-2'>
                                             <div>
