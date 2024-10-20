@@ -102,7 +102,7 @@ const ProductList = ()=>{
         <>
         <div className="">
             <div className="m-3 mx-5 p-5 text-xs text-gray-600 bg-white rounded-lg">
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between gap-8">
                     <div className="w-3/5 flex items-center gap-3">
                         <p>Showing</p>
                         <select 
@@ -126,9 +126,9 @@ const ProductList = ()=>{
                             src="/search.png" alt="" />
                         </div>
                     </div>
-                    <div className="w-1/5 border text-blue-500 text-sm font-semibold border-blue-500 rounded-xl text-center flex justify-center items-center">
+                    <div className=" min-w-40 border text-blue-500 text-sm font-semibold border-blue-500 rounded-xl flex justify-center items-center">
                             <button 
-                            className="flex-1 p-3 px-8 "  
+                            className="flex-1 p-3 text-center "  
                             onClick={handleNavigateAddNew}>
                                 + Add new
 

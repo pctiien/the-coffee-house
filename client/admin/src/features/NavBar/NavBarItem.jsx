@@ -19,14 +19,14 @@ const NavBarItem = ({isOpen,title,imgSrc,subItems})=>{
                     <h1 className=" group-hover:text-blue-600 text-sm overflow-x-hidden  max-sm:hidden  ">{title}</h1>
                 </div>
                 <div className = {` ${ isOpen ? 'opacity-100 visible' : 'hidden'} max-sm:hidden `}>
-                <ul className='list-disc list-inside p-2'>
+                <ul className='list-disc list-inside p-2 '>
                     {
                         subItems?.map((item, index) => {
                             return (
                                 <li 
                                     onClick={(e) => handleClick(e, index)}
                                     key={index}
-                                    className={`p-1 cursor-pointer hover:text-blue-400 text-sm ${selectedItem === index ? 'text-blue-400' : 'text-gray-500'}`}>
+                                    className={`p-1 text-xs md:text-sm cursor-pointer hover:text-blue-400 ${selectedItem === index ? 'text-blue-400' : 'text-gray-500'}`}>
                                     <Link to={item.ref}>
                                         {item.title}
                                     </Link>

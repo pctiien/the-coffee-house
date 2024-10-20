@@ -8,6 +8,7 @@ import AddProduct from './pages/Product/AddProduct'
 import ProductList from './pages/Product/ProductList'
 import VoucherList from './pages/Voucher/VoucherList'
 import ToppingList from './pages/Topping/ToppingList'
+import AddTopping from './pages/Topping/AddTopping'
 import AddCategory from './pages/Category/AddCategory'
 const App = ()=>{
   return (
@@ -21,6 +22,7 @@ const App = ()=>{
             <Route path= '/products' element = {<ProductList/>}/>
             <Route path='/vouchers' element={<VoucherList/>} />
             <Route path='/toppings' element={<ToppingList/>} />
+            <Route path='/toppings/add' element={<AddTopping/>} />
             <Route path= '/categories' element = {<CategoryList/>}/>
             <Route path= '/categories/add' element = {<AddCategory/>}/>
             <Route path= '/orders' element = {<OrderList/>}/>

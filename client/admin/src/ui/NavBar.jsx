@@ -25,13 +25,13 @@ const NavBar = () => {
             subItems: [
                 {
                     id: 1,
-                    title: 'Category List',
-                    ref: '/categories'
+                    title: 'New Category',
+                    ref: '/categories/add'
                 },
                 {
                     id: 2,
-                    title: 'New Category',
-                    ref: '/categories/add'
+                    title: 'Category List',
+                    ref: '/categories'
                 },
             ]
         },
@@ -90,7 +90,7 @@ const NavBar = () => {
     return (
         <div className="p-4  shadow-xl w-1/6 min-w-20  h-screen max-h-screen ">
             <div className="flex flex-col text-sm font-semibold justify-center">
-                <h1 className='uppercase text-gray-400 font-semibold text-lg  mb-2 text-center'>All pages</h1>
+                <h1 className='uppercase text-gray-400 font-semibold text-lg  mb-2 text-left'>All pages</h1>
                 {
                     navState?.map((item,index)=>{
                         return (

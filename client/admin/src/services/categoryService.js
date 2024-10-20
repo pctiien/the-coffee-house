@@ -32,4 +32,18 @@ const addNewCategory = async(categoryData)=>{
                 }
             })
 }
-export default {getAllCategories,addNewCategory}
+const deleteCategory = async(categoryId)=>{
+    return await axiosClient.delete(`/categories/${categoryId}`)
+            .then(response=>{
+                return {
+                    data: response.data
+                }
+            })
+            .catch(err=>{
+                return {
+                    data:null,
+                    err
+                }
+            })
+}
+export default {getAllCategories,addNewCategory,deleteCategory}

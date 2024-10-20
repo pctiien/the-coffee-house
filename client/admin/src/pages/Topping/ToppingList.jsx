@@ -1,8 +1,33 @@
 import Pagination from '../../features/Common/Pagination'
 import React from 'react'
 import toppingService  from '../../services/toppingService'
+import Dialog from '../../features/Common/Dialog'
 
 const ToppingList = ()=>{
+
+    // Handle delete product dialog
+    const [selectedTopping,setSelectedTopping] = React.useState(null)
+    const [isOpenDeleteDialog,setIsOpenDeleteDialog] = React.useState(false)
+    const onOpenDeleteDialog = (topping)=>{
+        setSelectedTopping(topping)
+        setIsOpenDeleteDialog(true)
+    }
+    const onCloseDeleteDialog = ()=>{
+        setIsOpenDeleteDialog(false)
+    }
+    const handleDeleteTopping = async()=>{
+
+        const response = await toppingService.deleteTopping(selectedTopping._id)
+        
+        if(response.err)
+        {
+            console.error(response.err)
+        }
+        fetchToppings()
+    }
+    const deleteDialogMsg = "Are you sure to delete this product"
+
+
 
     const [toppings,setToppings] = React.useState([])
 
@@ -19,18 +44,19 @@ const ToppingList = ()=>{
     const onPageChange = (page)=>{
         setSelectedPage(page)
     }
+    const fetchToppings = async()=>{
+        try{
+            const response = await toppingService.getAllToppings(entry,selectedPage)
+            setToppings(response.data.result.toppings)
+            setTotalEntry(response.data.result.total)
+        } catch(e)
+        {
+            console.err(e)
+        }         
+    }
     React.useEffect(()=>{
         
-        const fetchToppings = async()=>{
-            try{
-                const response = await toppingService.getAllToppings(entry,selectedPage)
-                setToppings(response.data.result.toppings)
-                setTotalEntry(response.data.result.total)
-            } catch(e)
-            {
-                console.log(e.message)
-            }         
-        }
+        
 
         fetchToppings()
 
@@ -40,7 +66,7 @@ const ToppingList = ()=>{
         <>
         <div className="">
             <div className="m-3 mx-5 p-5 text-xs text-gray-600 bg-white rounded-lg">
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between gap-8">
                     <div className="w-3/5 flex items-center gap-3">
                         <p>Showing</p>
                         <select 
@@ -64,9 +90,13 @@ const ToppingList = ()=>{
                             src="/search.png" alt="" />
                         </div>
                     </div>
-                    <div className="w-1/5 border text-blue-500 text-sm font-semibold border-blue-500 rounded-xl p-4 px-8 text-center">
-                        <button>+ Add new</button>
+                    <div className=" min-w-40 border text-blue-500 text-sm font-semibold border-blue-500 rounded-xl flex justify-center items-center">
+                            <button 
+                            className="flex-1 p-3 text-center "  
+                            >
+                                + Add new
 
+                            </button>
                     </div>
                 </div>
                 <div className=''>
@@ -77,6 +107,8 @@ const ToppingList = ()=>{
                                     <th>ID</th>
                                     <th>Topping name</th>
                                     <th>Additional price</th>
+                                    <th>Actions</th>
+
                                 </tr>
                             </thead>
                             <tbody className=''>
@@ -87,7 +119,13 @@ const ToppingList = ()=>{
                                                 <td >{topping._id}</td>
                                                 <td className='font-semibold'>{topping.name}</td>
                                                 <td className='font-semibold'>{topping.priceAddition}</td>
-
+                                                <td className=" text-white">
+                                                    <div className="flex">
+                                                        <button
+                                                        onClick={()=>onOpenDeleteDialog(topping)} 
+                                                        className="ml-2 bg-red-500 p-2 rounded-lg px-5">Delete</button>
+                                                    </div>
+                                                </td>
                                             </tr>
                                         )
                                     })
@@ -99,6 +137,7 @@ const ToppingList = ()=>{
                     <Pagination  onPageChange={onPageChange} entry={entry} currentPage={selectedPage} totalEntry={totalEntry}/>
                 </div>
             </div>
+            <Dialog isOpen={isOpenDeleteDialog} onClose={onCloseDeleteDialog} message={deleteDialogMsg} onSave={handleDeleteTopping} />
         </div>
         </>
     )

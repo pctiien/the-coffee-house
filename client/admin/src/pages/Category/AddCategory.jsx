@@ -13,7 +13,6 @@ const AddCategory = ()=>{
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         if (file) {
-            console.log('File đã chọn:', file);
             setCategoryFormData({...categoryFormData, categoryImage: file})
         }
     }
@@ -30,7 +29,6 @@ const AddCategory = ()=>{
     const handleOnChangeForm = (e)=>{
         const {name,value} = e.target
         setCategoryFormData({...categoryFormData,[name]:value}) 
-        console.log(categoryFormData)
     }
 
     const validCategoryFormData = ()=>{

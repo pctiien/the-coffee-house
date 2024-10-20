@@ -2,8 +2,35 @@ import './CategoryList.css'
 import Pagination from '../../features/Common/Pagination'
 import React from 'react'
 import categoryService  from '../../services/categoryService'
+import Dialog from '../../features/Common/Dialog'
+import {  useNavigate } from 'react-router-dom';
+import { useNavBarItemContext } from "../../context/NavBarItemContext"
 
 const CategoryList = ()=>{
+    // Handle delete product dialog
+    const [selectedCategory,setSelectedCategory] = React.useState(null)
+    const [isOpenDeleteDialog,setIsOpenDeleteDialog] = React.useState(false)
+    const onOpenDeleteDialog = (category)=>{
+        setSelectedCategory(category)
+        setIsOpenDeleteDialog(true)
+    }
+    const onCloseDeleteDialog = ()=>{
+        setIsOpenDeleteDialog(false)
+    }
+    const handleDeleteCategory = async()=>{
+
+        const response = await categoryService.deleteCategory(selectedCategory._id)
+        
+        if(response.err)
+        {
+            console.error(response.err)
+        }
+        fetchCategories()
+    }
+    const deleteDialogMsg = "Are you sure to delete this product"
+
+
+
 
     const [categories,setCategories] = React.useState([])
 
@@ -20,18 +47,26 @@ const CategoryList = ()=>{
     const onPageChange = (page)=>{
         setSelectedPage(page)
     }
+    const fetchCategories = async()=>{
+        try{
+            const response = await categoryService.getAllCategories(entry,selectedPage)
+            setCategories(response.data.result.categories)
+            setTotalEntry(response.data.result.total)
+        } catch(e)
+        {
+            console.err(e.message)
+        }         
+    }
+    const navigate = useNavigate()
+    const { setSelectedItem } = useNavBarItemContext(); 
+
+    const handleNavigateAddNew = ()=>{
+        setSelectedItem(0)
+        navigate('/categories/add')
+    }
     React.useEffect(()=>{
         
-        const fetchCategories = async()=>{
-            try{
-                const response = await categoryService.getAllCategories(entry,selectedPage)
-                setCategories(response.data.result.categories)
-                setTotalEntry(response.data.result.total)
-            } catch(e)
-            {
-                console.log(e.message)
-            }         
-        }
+        
 
         fetchCategories()
 
@@ -41,7 +76,7 @@ const CategoryList = ()=>{
         <>
         <div className="">
             <div className="m-3 mx-5 p-5 text-xs text-gray-600 bg-white rounded-lg">
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between gap-8">
                     <div className="w-3/5 flex items-center gap-3">
                         <p>Showing</p>
                         <select 
@@ -65,9 +100,13 @@ const CategoryList = ()=>{
                             src="/search.png" alt="" />
                         </div>
                     </div>
-                    <div className="w-1/5 border text-blue-500 text-sm font-semibold border-blue-500 rounded-xl p-4 px-8 text-center">
-                        <button>+ Add new</button>
+                    <div className=" min-w-40 border text-blue-500 text-sm font-semibold border-blue-500 rounded-xl flex justify-center items-center">
+                            <button 
+                            className="flex-1 p-3 text-center "  
+                            onClick={handleNavigateAddNew}>
+                                + Add new
 
+                            </button>
                     </div>
                 </div>
                 <div className=''>
@@ -78,6 +117,7 @@ const CategoryList = ()=>{
                                     <th>ID</th>
                                     <th>Category name</th>
                                     <th>Category image</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody className=''>
@@ -92,6 +132,13 @@ const CategoryList = ()=>{
                                                     className= 'w-10 h-10' 
                                                     src={category.img} alt="" />
                                                 </td>
+                                                <td className=" text-white">
+                                                    <div className="flex">
+                                                        <button
+                                                        onClick={()=>onOpenDeleteDialog(category)} 
+                                                        className="ml-2 bg-red-500 p-2 rounded-lg px-5">Delete</button>
+                                                    </div>
+                                                </td>
                                             </tr>
                                         )
                                     })
@@ -103,6 +150,8 @@ const CategoryList = ()=>{
                     <Pagination  onPageChange={onPageChange} entry={entry} currentPage={selectedPage} totalEntry={totalEntry}/>
                 </div>
             </div>
+            <Dialog isOpen={isOpenDeleteDialog} onClose={onCloseDeleteDialog} message={deleteDialogMsg} onSave={handleDeleteCategory} />
+
         </div>
         </>
     )
