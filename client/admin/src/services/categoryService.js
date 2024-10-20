@@ -17,5 +17,19 @@ const getAllCategories = async(limit=10,page=1)=>{
                             })
     
 }
-
-export default {getAllCategories}
+const addNewCategory = async(categoryData)=>{
+    return await axiosClient.post('/categories',categoryData,{
+            headers:{ 'content-type': 'multipart/form-data' }
+            }).then(response=>{
+                return {
+                    data: response.data
+                }
+            })
+            .catch(err=>{
+                return {
+                    data: null,
+                    err
+                }
+            })
+}
+export default {getAllCategories,addNewCategory}

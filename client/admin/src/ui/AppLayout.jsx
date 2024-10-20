@@ -8,7 +8,7 @@ const AppLayout = () => {
             <NavBar />
             <div className="flex-1 flex flex-col ">
                 <Header />
-                <div className=" bg-slate-100 overflow-auto">
+                <div className=" bg-slate-100 overflow-auto h-full">
                     <Outlet />
                 </div>
             </div>
