@@ -3,7 +3,7 @@ import categoryService from '../../services/categoryService'
 import toppingService from '../../services/toppingService'
 import productService from '../../services/productService'
 
-const Product = ()=>{
+const AddProduct = ()=>{
 
     // Handle input files 
     const fileInputRef = React.useRef(null)  
@@ -129,7 +129,7 @@ const Product = ()=>{
 
             }catch(e)
             {
-                console.log(e.message)
+                console.error(e.message)
             }
         }
         const fetchToppings = async()=>{
@@ -138,7 +138,7 @@ const Product = ()=>{
                 setToppings(response.data.result.toppings)
             }catch(e)
             {
-                console.log(e.message)
+                console.error(e.message)
             }
         }
         fetchCategories()
@@ -312,4 +312,4 @@ const Product = ()=>{
         </>
     )
 }
-export default Product
+export default AddProduct

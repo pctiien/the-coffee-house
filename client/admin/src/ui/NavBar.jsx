@@ -77,6 +77,22 @@ const NavBar = () => {
                     ref: '#'
                 }
             ]
+        },
+        {
+            title: 'Voucher',
+            icon: '/voucher.png',
+            subItems: [
+                {
+                    id: 1,
+                    title: 'Voucher List',
+                    ref: '/vouchers'
+                },
+                {
+                    id: 2,
+                    title: 'Add Voucher',
+                    ref: '/vouchers/add'
+                },
+            ]
         }
     ]);
     

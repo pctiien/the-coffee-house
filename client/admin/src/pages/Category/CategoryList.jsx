@@ -126,7 +126,7 @@ const CategoryList = ()=>{
                                         return (
                                             <tr key={index} className=''>
                                                 <td >{category._id}</td>
-                                                <td className='font-semibold'>{category.name}</td>
+                                                <td className=''>{category.name}</td>
                                                 <td>
                                                     <img
                                                     className= 'w-10 h-10' 

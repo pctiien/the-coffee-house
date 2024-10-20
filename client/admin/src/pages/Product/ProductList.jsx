@@ -156,7 +156,7 @@ const ProductList = ()=>{
                                         return (
                                             <tr key={index} className=''>
                                                 <td >{product._id}</td>
-                                                <td className='font-semibold'>{product.name}</td>
+                                                <td className=''>{product.name}</td>
                                                 <td>
                                                     <img
                                                     className= 'w-10 h-10' 
