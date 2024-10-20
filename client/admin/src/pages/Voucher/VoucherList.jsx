@@ -4,7 +4,6 @@ import voucherService  from '../../services/voucherService'
 import Dialog from '../../features/Common/Dialog'
 import {  useNavigate } from 'react-router-dom';
 import { useNavBarItemContext } from "../../context/NavBarItemContext"
-
 const VoucherList = ()=>{
 
     // Handle delete delete dialog

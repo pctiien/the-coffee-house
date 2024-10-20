@@ -17,5 +17,20 @@ const getAllOrders = async(limit=10,page=1)=>{
                             })
     
 }
-
-export default {getAllOrders}
+const changeStatusOrder = async(orderId,orderData)=>{
+    return await axiosClient.patch(`/orders/${orderId}`,orderData)
+                            .then(response=>{
+                                return {
+                                    data: response.data,
+                                    
+                                }
+                            })
+                            .catch(err=> {
+                                console.log(err)
+                                return {
+                                    data: null,
+                                    message : err.message
+                                }
+                            })
+}
+export default {getAllOrders,changeStatusOrder}

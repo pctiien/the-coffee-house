@@ -1,8 +1,40 @@
 import Pagination from '../../features/Common/Pagination'
 import React from 'react'
 import orderService  from '../../services/orderService'
+import Dialog from '../../features/Common/Dialog'
 
 const OrderList = ()=>{
+    const [selectedOrder,setSelectedOrder] = React.useState(null)
+    const handleOnChangeForm = (order,e)=>{
+        const {name,value} = e.target
+        setSelectedOrder({...order,[name]:value}) 
+        onOpenStatusDialog()
+    }
+    let orderStatus = ['Pending','Delivering','Completed','Rejected']
+
+    // Handle change status order dialog
+    const [isOpenChangeStatusDialog,setIsOpenChangeStatusDialog] = React.useState(false)
+    const onOpenStatusDialog = ()=>{
+        setIsOpenChangeStatusDialog(true)
+    }
+    const onCloseChangeStatusDialog = ()=>{
+        setIsOpenChangeStatusDialog(false)
+    }
+    const handleChangeStatusOrder = async()=>{
+        console.log({status: selectedOrder.status})
+        const response = await orderService.changeStatusOrder(selectedOrder._id,{status: selectedOrder.status})
+        
+        if(response.err)
+        {
+            console.error(response.err)
+        }else{
+            console.log(response)
+        }
+        fetchOrders()
+    }
+    const changeStatusDialogMsg = `Are you sure to change this status to ${selectedOrder?.status}`
+
+
 
     const [orders,setOrders] = React.useState([])
 
@@ -44,19 +76,18 @@ const OrderList = ()=>{
     
         return `${hours}:${minutes} ${day}/${month}/${year}`;
     };
+    const fetchOrders = async()=>{
+        try{
+            const response = await orderService.getAllOrders(entry,selectedPage)
+            setOrders(response.data.result.orders)
+            setTotalEntry(response.data.result.total)
+        } catch(e)
+        {
+            console.log(e.message)
+        }         
+    }
     React.useEffect(()=>{
         
-        const fetchOrders = async()=>{
-            try{
-                const response = await orderService.getAllOrders(entry,selectedPage)
-                console.log(response)
-                setOrders(response.data.result.orders)
-                setTotalEntry(response.data.result.total)
-            } catch(e)
-            {
-                console.log(e.message)
-            }         
-        }
 
         fetchOrders()
 
@@ -101,9 +132,12 @@ const OrderList = ()=>{
                             <thead className=''>
                                 <tr>
                                     <th>ID</th>
+                                    <th className=''>Customer name</th>
                                     <th className='w-1/5'>Address</th>
+                                    <th className=''>Phone</th>
+
                                     <th>Delivery time</th>
-                                    <th>Total</th>
+                                    <th>After discount</th>
                                     <th>Payment method</th>
                                     <th>Status</th>
 
@@ -115,15 +149,37 @@ const OrderList = ()=>{
                                         return (
                                             <tr key={index} className=''>
                                                 <td className='' >{order._id}</td>
+                                                <td className='' >{order.user.name}</td>
                                                 <td className='font-semibold max-w-80 overflow-hidden'>{order.address}</td>
+                                                <td className='font-semibold max-w-80'>{order.user.phone}</td>
                                                 <td className='font-semibold'>{formatDate(new Date(order.deliveryTime))}</td>
-                                                <td className='font-semibold'>{order.total}</td>
+                                                <td className='font-semibold'>{order.afterDiscount} VND</td>
                                                 <td className='font-semibold'>{order.paymentMethod}</td>
-                                                <td className={`font-semibold w-max text-center `}>
+                                                <td 
+                                                
+                                                className={`font-semibold w-max  text-center cursor-pointer `}>
 
-                                                    <p className={`${getColorStatus(order.status)}  rounded-lg border w-full h-full py-1`}>
+                                                    <select 
+                                                    className={`${getColorStatus(order.status)} rounded-lg border w-full h-full py-1`}
+                                                    name="status" 
+                                                    onChange={(e)=>handleOnChangeForm(order,e)}
+                                                    value={order?.status}>
+                                                    <option 
+                                                    className={`${getColorStatus(order.status)}  rounded-lg border w-full h-full py-1`}>
                                                     {order.status}
-                                                    </p>
+                                                    </option>
+                                                        {
+                                                            orderStatus.filter(status=>status!=order.status).map((status,index)=>{
+                                                                return(
+                                                                    <>
+                                                                    <option value={status}  key={index} className={`${getColorStatus(status)} bg-gray-100  rounded-lg border w-full h-full py-1`}>
+                                                                    {status}
+                                                                    </option>
+                                                                    </>
+                                                                )
+                                                            })
+                                                        }
+                                                    </select>
                                                 </td>
 
                                             </tr>
@@ -137,6 +193,7 @@ const OrderList = ()=>{
                     <Pagination  onPageChange={onPageChange} entry={entry} currentPage={selectedPage} totalEntry={totalEntry}/>
                 </div>
             </div>
+            <Dialog isOpen={isOpenChangeStatusDialog} onClose={onCloseChangeStatusDialog} message={changeStatusDialogMsg} onSave={handleChangeStatusOrder} />
         </div>
         </>
     )
