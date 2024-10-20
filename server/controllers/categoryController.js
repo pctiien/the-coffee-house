@@ -1,7 +1,7 @@
 const {Category} = require('../models/Category')
 const QueryHelper = require('../utils/QueryHelper')
 const s3 = require('../utils/s3')
-
+const AppError = require('../utils/appError')
 // GET .../
 const getAllCategories = async(req,res,next)=>{
     try{
@@ -58,7 +58,7 @@ const deleteCategory = async(req,res,next)=>{
     if(category.img)
     {
         try {
-            await deleteImg(category.img)
+            await s3.deleteImg(category.img)
         } catch (error) {
             return next(new AppError('Error deleting image'))
         }

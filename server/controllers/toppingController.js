@@ -1,16 +1,19 @@
 const {Topping} = require('../models/Topping')
 const QueryHelper = require('../utils/QueryHelper')
 const mongoose = require('mongoose')
+const AppError = require('../utils/appError')
 const getAllToppings = async(req,res,next)=>{
     try{
         
         const queryBuilder = new QueryHelper(Topping.find(),req.query).executeQuery()
 
         const toppings = await queryBuilder.query 
+        const total = await Topping.countDocuments()
 
         res.status(200).json({
             result:{
-                toppings
+                toppings,
+                total
             },
             status: 'success'
         })
@@ -57,6 +60,39 @@ const getToppingsByIds = async (req,res,next)=>{
         next(err)
     }
 }
+const addNewTopping = async(req,res,next)=>{
+    try{
 
+        const toppingData = req.body
+    
+        if(!toppingData){
+            return next(new AppError('Topping data is missing',400))
+        }
+        const topping = await Topping.create(toppingData)
+        res.status(201).json({
+            status: 'success',
+            data : topping 
+        })
 
-module.exports = {getAllToppings,getToppingsByIds}
+    }catch(err)
+    {
+        next(err)
+    }
+}
+const deleteTopping = async(req,res,next)=>{
+
+    const topping = await Topping.findByIdAndDelete(req.params.id)
+
+    if(!topping)
+    {
+        res.status(400).json({
+            status: 'fail',
+            message: 'Topping not found'
+        })
+    }
+    res.status(200).json({
+        status: 'success',
+        message: 'Topping deleted successfully'
+    })
+}
+module.exports = {getAllToppings,getToppingsByIds,addNewTopping,deleteTopping}
