@@ -9,6 +9,8 @@ const categoryRouter = require('./routers/categoryRouter')
 const toppingRouter = require('./routers/toppingRouter')
 const sizeRouter = require('./routers/sizeRouter')
 const orderRouter = require('./routers/orderRouter')
+const voucherRouter = require('./routers/voucherRouter')
+
 const appErrorHandler = require('./utils/appErrorHandler')
 
 app.use(
@@ -27,7 +29,7 @@ app.use('/users',userRouter)
 app.use('/categories',categoryRouter)
 app.use('/sizes',sizeRouter)
 app.use('/orders',orderRouter)
-
+app.use('/vouchers',voucherRouter)
 
 app.use(appErrorHandler)
 

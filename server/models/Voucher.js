@@ -9,15 +9,23 @@ const voucherSchema = new mongoose.Schema({
         minlength: 9,
         maxlength: 12
     },
+    discountType:{
+        type: String,
+        enum: ['PERCENTAGE','FIXED_AMOUNT']
+    },
     discountValue:{
         type: Number,
         required: true,
     },
-    voucherDescription:{
+    minimumOrderValue:{
+        type: Number,
+        default : 0 
+    },
+    description:{
         type: String,
         required: true
     },
-    expiredDay:{
+    validTo:{
         type: Date,
         validate: {
             validator: (value)=>{
@@ -26,9 +34,10 @@ const voucherSchema = new mongoose.Schema({
             message: 'Expired day must be a future date'
         }
     },
-    remainingCount:{
-        type: Number,
-    }
+    imageUrl:{
+        type: String
+    },
+
 },{
     timestamps: true
 })
