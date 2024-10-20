@@ -9,6 +9,8 @@ import React from 'react'
 
 const SelectedDishes = ({cart,size})=>{
 
+    // Value after applying voucher
+    let afterDiscount = cart?.total
 
     // Handle confirm order
     const {order,setOrder} = useOrder()
@@ -52,6 +54,8 @@ const SelectedDishes = ({cart,size})=>{
     // Handle error Order
 
     const validateOrder = ()=>{
+        console.log(order)
+
         if(order.orderItemIds.length <=0)
         {
             alert('At least one order item')
@@ -175,9 +179,34 @@ const SelectedDishes = ({cart,size})=>{
                         
                         <div className ='py-4 cursor-pointer'>
                             <h1 className ='text-orange-400 text-sm'>
-                                Promotion
+                                Voucher used
                             </h1>
-                            
+                            <div className='flex justify-between border-b py-4 items-center'>
+                                <h1 className='text-sm'>{order?.voucherUsed?.description || 'No voucher applied'}</h1>
+                                {(() => {
+                                    const voucherUsed = order?.voucherUsed
+                                    
+                                    afterDiscount = cart?.total
+                                    switch(voucherUsed?.discountType)
+                                    {
+                                        case 'PERCENTAGE': {
+                                            afterDiscount = Math.ceil(afterDiscount*((1-voucherUsed.discountValue)))
+                                            break
+                                        }
+                                        case 'FIXED_AMOUNT':{
+                                            afterDiscount = afterDiscount - voucherUsed.discountValue
+                                            if(afterDiscount <0) afterDiscount = 0
+                                            break
+                                        }
+                                        default: break
+                                    }
+                                    return (    
+                                        <>
+                                        <span><span className="line-through">{cart?.total}</span> {afterDiscount} VND</span>
+                                        </>
+                                    )
+                                })()}
+                            </div>
                         </div>
                     </div>
                </div>
@@ -187,7 +216,7 @@ const SelectedDishes = ({cart,size})=>{
                             Total amount
                         </h1>
                         <h1 className ='font-medium '>
-                            {cart.total}
+                            {afterDiscount}
                         </h1>
                     </div>
                     <button 

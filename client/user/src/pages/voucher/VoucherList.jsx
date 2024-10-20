@@ -1,8 +1,9 @@
 import React from 'react';
 import VoucherCard from './VoucherCard';
-import { Vouchers } from '../../sample/Vouchers';
-
+import voucherService from '../../services/voucherService'
 const VoucherList = ({isOpen,onClose})=>{
+
+    const [vouchers,setVouchers] = React.useState([])
 
     const [voucherCode,setVoucherCode] = React.useState('')
 
@@ -14,6 +15,16 @@ const VoucherList = ({isOpen,onClose})=>{
 
     React.useEffect(()=>{
 
+        const fetchVouchers = async()=>{
+            try{
+                const response = await voucherService.getAllVouchers(100,1)
+                setVouchers(response.data.result.vouchers)
+            } catch(e)
+            {
+                console.error(e.message)
+            }         
+        }
+        fetchVouchers()
         const handleClickOutside = (e) =>{
             if(dialogRef.current && !dialogRef.current.contains(e.target))
             {
@@ -22,7 +33,6 @@ const VoucherList = ({isOpen,onClose})=>{
         }
 
         document.addEventListener('mousedown',handleClickOutside)
-
         return ()=>{
             document.removeEventListener('mousedown',handleClickOutside)
         }
@@ -81,7 +91,7 @@ const VoucherList = ({isOpen,onClose})=>{
                     style={{ maxHeight: '100%' }}
                     className="flex flex-col items-center gap-3 p-3 ">
                         {
-                            Vouchers.map((voucher, index) => {
+                            vouchers.length>0 && vouchers.map((voucher, index) => {
                                 return (
                                     <div key={index}>
                                         <VoucherCard item={voucher} />
