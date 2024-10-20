@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-
+const OrderItem = require('./OrderItem')
 const userInfoSchema = new mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -36,9 +36,13 @@ const orderSchema = new mongoose.Schema({
         type: Date,
         required: true, 
     },
-    total : {
+    originalTotal : {
         type: Number,
         required: true
+    },
+    afterDiscount :{
+        type: Number,
+        required: true,
     },
     orderItemIds: [{
         type : mongoose.Schema.Types.ObjectId,
