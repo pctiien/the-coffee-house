@@ -15,7 +15,8 @@ const SelectedDishes = ({cart,size})=>{
     // Handle confirm order
     const {order,setOrder} = useOrder()
 
-    const handleConfirmOrder = async()=>{
+    const handleConfirmOrder = async(e)=>{
+        e.target.disabled = true
         const orderItemIds = cart.items.map(item=>{
             return {
                 productId: item.product._id,
@@ -31,8 +32,12 @@ const SelectedDishes = ({cart,size})=>{
         })
         setOrder({...order,orderItemIds})
     
-        if(!validateOrder()) return 
+        if(!validateOrder()) {
+            e.target.disabled = false
+            return
+        } 
         const response = await orderService.createOrder(order)
+        e.target.disabled = false
 
         if(response.err)
         {
@@ -221,7 +226,7 @@ const SelectedDishes = ({cart,size})=>{
                     </div>
                     <button 
                     onClick = {handleConfirmOrder}
-                    className = 'text-orange-500 rounded-full bg-white px-8 p-3 hover:text-gray-600'>Order</button>
+                    className = 'text-orange-500 rounded-full bg-white px-8 p-3 hover:text-gray-600 disabled:cursor-not-allowed '>Order</button>
                 </div>
             
             </div>

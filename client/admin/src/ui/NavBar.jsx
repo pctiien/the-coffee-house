@@ -59,12 +59,7 @@ const NavBar = () => {
                     id: 1,
                     title: 'Order List',
                     ref: '/orders'
-                },
-                {
-                    id: 2,
-                    title: 'Order Detail',
-                    ref: '#'
-                },
+                }
             ]
         },
         {
@@ -74,7 +69,7 @@ const NavBar = () => {
                 {
                     id: 1,
                     title: 'All User',
-                    ref: '#'
+                    ref: '/users'
                 }
             ]
         },

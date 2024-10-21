@@ -6,14 +6,23 @@ const QueryHelper = require('../utils/QueryHelper')
 
 const getAllUsers = async(req,res,next)=>{
 
-    const queryBuilder = new QueryHelper(User.find(),req.query).executeQuery() 
+    try{
+        const queryHelper = new QueryHelper(User.find(),req.query).executeQuery()
 
-    const users = await queryBuilder.query 
+        const users = await queryHelper.query
+        const total = await User.countDocuments()
 
-    res.status(200).json({
-        data : users,
-        status: 'success',
-    })
+        res.status(200).json({
+            status: 'success',
+            result : {
+                users,
+                total
+            }
+        })
+    }catch(e)
+    {
+        next(e)
+    }
 }
 
 

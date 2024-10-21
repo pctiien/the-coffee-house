@@ -23,6 +23,22 @@ const getAllOrders = async(req,res,next)=>{
         status: 'success'
     })
 }
+
+// Get Order By Id- Get .../:id
+const getOrderById = async(req,res,next)=>{
+    try{
+        const order = await Order.findById(req.params.id)
+        res.status(200).json({
+            result : {
+                order,
+            },
+            status: 'success'
+        })
+    }catch(err)
+    {
+        next(err)
+    }
+}
 // Update Order - PATCH .../:id
 const updateOrder = async(req,res,next)=>{
     try{
@@ -124,7 +140,7 @@ const createOrder = async(req,res,next)=>{
             totalMoney += total
 
         }
-
+        afterDiscount = totalMoney
         if(orderData.voucherUsed)
         {
             const voucher = await Voucher.findOne({code: orderData.voucherUsed.code})
@@ -184,4 +200,4 @@ const createOrder = async(req,res,next)=>{
     }
 }
 
-module.exports = {createOrder,getAllOrders,updateOrder}
+module.exports = {createOrder,getAllOrders,updateOrder,getOrderById}

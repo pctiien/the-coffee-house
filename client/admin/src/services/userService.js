@@ -1,18 +1,18 @@
 import axiosClient from './axios'
 
-const getAllUsers = async()=>{
-    return await axiosClient.get('/users')
-        .then(response=>{
-            return {
-                data : response.data.data
-            }
-        })
-        .catch(err=>{
-            return {
-                data:null,
-                err
-            }
-        })
+const getAllUsers = async(limit,page)=>{
+    return await axiosClient.get(`/users?limit=${limit}&page=${page}`)
+                        .then(response=>{
+                            return {
+                                data: response.data
+                            }
+                        })
+                        .catch(err=>{
+                            return {
+                                data: null,
+                                err
+                            }
+                        })
 }
 
-export {getAllUsers}
+export default {getAllUsers}

@@ -5,7 +5,6 @@ import Category from '../../features/Product/Category.jsx'
 import NewsList from '../../features/News/NewsList.jsx';
 
 import {DashboardSlides} from '../../sample/Banner'
-import {Categories} from '../../sample/Categories'
 
 import categoryService from '../../services/categoryService';
 const DashBoard = ()=>{

@@ -2,8 +2,13 @@ import Pagination from '../../features/Common/Pagination'
 import React from 'react'
 import orderService  from '../../services/orderService'
 import Dialog from '../../features/Common/Dialog'
-
+import {useNavigate} from 'react-router-dom'
 const OrderList = ()=>{
+    const navigate = useNavigate()
+    const navigateToOrderDetail = (order)=>{
+        navigate(`/orders/${order._id}`)
+    }
+
     const [selectedOrder,setSelectedOrder] = React.useState(null)
     const handleOnChangeForm = (order,e)=>{
         const {name,value} = e.target
@@ -54,17 +59,17 @@ const OrderList = ()=>{
     const getColorStatus=  (status)=>{
         if(status.toLowerCase() === 'pending')
         {
-            return 'text-yellow-500 border border-yellow-500'
+            return 'text-yellow-500  bg-yellow-100'
         }
         if(status.toLowerCase() === 'completed')
         {
-            return 'text-green-500 border border-green-500'
+            return 'text-green-500  bg-green-100'
         }
         if(status.toLowerCase() === 'rejected')
         {
-            return 'text-red-500 border border-red-500'
+            return 'text-red-500  bg-red-100'
         }
-        return 'text-blue-500 border border-blue-500'
+        return 'text-blue-500  bg-blue-100'
 
     }
     const formatDate = (date) => {
@@ -121,17 +126,13 @@ const OrderList = ()=>{
                             src="/search.png" alt="" />
                         </div>
                     </div>
-                    <div className="w-1/5 border text-blue-500 text-sm font-semibold border-blue-500 rounded-xl p-4 px-8 text-center">
-                        <button>+ Add new</button>
-
-                    </div>
+                    
                 </div>
                 <div className=''>
                     <div className='border-b py-5 pb-12'>
                         <table className='text-sm table-auto text-black '>
                             <thead className=''>
                                 <tr>
-                                    <th>ID</th>
                                     <th className=''>Customer name</th>
                                     <th className='w-1/5'>Address</th>
                                     <th className=''>Phone</th>
@@ -139,7 +140,8 @@ const OrderList = ()=>{
                                     <th>Delivery time</th>
                                     <th>After discount</th>
                                     <th>Payment method</th>
-                                    <th>Status</th>
+                                    <th className=''>Status</th>
+                                    <th>Order Detail</th>
 
                                 </tr>
                             </thead>
@@ -148,31 +150,30 @@ const OrderList = ()=>{
                                     orders?.map((order,index)=>{
                                         return (
                                             <tr key={index} className=''>
-                                                <td className='' >{order._id}</td>
                                                 <td className='' >{order.user.name}</td>
-                                                <td className='font-semibold max-w-80 overflow-hidden'>{order.address}</td>
-                                                <td className='font-semibold max-w-80'>{order.user.phone}</td>
-                                                <td className='font-semibold'>{formatDate(new Date(order.deliveryTime))}</td>
-                                                <td className='font-semibold'>{order.afterDiscount} VND</td>
-                                                <td className='font-semibold'>{order.paymentMethod}</td>
+                                                <td className=' max-w-80 overflow-hidden'>{order.address}</td>
+                                                <td className=' max-w-80'>{order.user.phone}</td>
+                                                <td >{formatDate(new Date(order.deliveryTime))}</td>
+                                                <td className=''>{order.afterDiscount} VND</td>
+                                                <td className=''>{order.paymentMethod}</td>
                                                 <td 
                                                 
-                                                className={`font-semibold w-max  text-center cursor-pointer `}>
+                                                className={`font-medium w-max  text-center `}>
 
                                                     <select 
-                                                    className={`${getColorStatus(order.status)} rounded-lg border w-full h-full py-1`}
+                                                    className={`${getColorStatus(order.status)} rounded-lg cursor-pointer w-full h-full py-1`}
                                                     name="status" 
                                                     onChange={(e)=>handleOnChangeForm(order,e)}
                                                     value={order?.status}>
                                                     <option 
-                                                    className={`${getColorStatus(order.status)}  rounded-lg border w-full h-full py-1`}>
+                                                    className={`${getColorStatus(order.status)}`}>
                                                     {order.status}
                                                     </option>
                                                         {
                                                             orderStatus.filter(status=>status!=order.status).map((status,index)=>{
                                                                 return(
                                                                     <>
-                                                                    <option value={status}  key={index} className={`${getColorStatus(status)} bg-gray-100  rounded-lg border w-full h-full py-1`}>
+                                                                    <option value={status}  key={index} className={`${getColorStatus(status)}  `}>
                                                                     {status}
                                                                     </option>
                                                                     </>
@@ -180,6 +181,11 @@ const OrderList = ()=>{
                                                             })
                                                         }
                                                     </select>
+                                                </td>
+                                                <td 
+                                                onClick={()=>navigateToOrderDetail(order)}
+                                                className='cursor-pointer'>
+                                                    <div className='border p-1 text-center text-sm text-green-600 font-medium  border-green-600 rounded-lg '>See</div>
                                                 </td>
 
                                             </tr>
